@@ -1,0 +1,166 @@
+---
+title: "Building My First Portfolio Website"
+summary: "A reflection on the journey of creating my personal portfolio website using Next.js, TypeScript, and modern web technologies."
+date: "2024-08-09"
+tags: ["web-development", "nextjs", "portfolio", "typescript"]
+readTime: "5 min read"
+featured: true
+---
+
+# Building My First Portfolio Website
+
+Creating a personal portfolio website has been on my todo list for months. As a computer science student approaching graduation, I knew I needed a professional online presence to showcase my projects and skills. After weeks of planning and development, I'm excited to share the journey of building this portfolio website.
+
+## Why I Decided to Build My Own
+
+While there are many portfolio builders and templates available, I decided to build my own from scratch for several reasons:
+
+### Showcase My Skills
+Building the portfolio itself becomes a project that demonstrates my technical abilities. Recruiters and potential employers can see not just what I've built, but how I've built it.
+
+### Complete Control
+Having full control over the design, functionality, and content management allows me to create exactly what I envision without limitations.
+
+### Learning Opportunity
+Every project is a chance to learn something new. This portfolio project let me dive deeper into Next.js 14, TypeScript, and modern web development practices.
+
+## Technology Choices
+
+### Next.js 14 with App Router
+I chose Next.js for its excellent performance, SEO capabilities, and developer experience. The new App Router provides a clean way to organize pages and layouts.
+
+```tsx
+// Clean layout structure with the new App Router
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="en">
+      <body>
+        <ThemeProvider>
+          <Navigation />
+          <main>{children}</main>
+        </ThemeProvider>
+      </body>
+    </html>
+  )
+}
+```
+
+### TypeScript
+TypeScript was a no-brainer for this project. It provides better developer experience, catches errors early, and makes the codebase more maintainable.
+
+### Tailwind CSS
+For styling, I went with Tailwind CSS because it allows for rapid development while maintaining consistency. The utility-first approach keeps the CSS bundle small and makes responsive design straightforward.
+
+### MDX for Content Management
+Instead of using a complex CMS, I decided to use MDX files for managing content. This allows me to write rich content with embedded React components while keeping everything in the codebase.
+
+```mdx
+---
+title: "My Project"
+technologies: ["React", "Node.js"]
+date: "2024-01-15"
+---
+
+# Project Description
+
+This is regular markdown content...
+
+<InteractiveComponent />
+```
+
+## Key Features Implemented
+
+### Dark Mode
+Implementing a proper dark mode was essential for user experience. I used `next-themes` to handle theme switching with system preference detection.
+
+### Responsive Design
+The website works perfectly on all device sizes, from mobile phones to large desktop screens. Every component is carefully designed to be responsive.
+
+### Performance Optimization
+- Static site generation for fast loading
+- Optimized images with Next.js Image component
+- Code splitting and lazy loading
+- Minimal JavaScript bundle size
+
+### Accessibility
+I made sure the website is accessible to all users by implementing:
+- Proper semantic HTML structure
+- ARIA labels where needed
+- Keyboard navigation support
+- Good color contrast ratios
+
+## Challenges Faced
+
+### MDX Setup
+Getting MDX to work properly with syntax highlighting and custom components took some time. I had to experiment with different rehype plugins to get the perfect setup.
+
+### Animation Performance
+Initially, some animations were causing performance issues on mobile devices. I had to optimize the Framer Motion animations and use CSS transforms for better performance.
+
+### Content Organization
+Structuring the content in a scalable way required careful planning. I created a robust system for managing projects and blog posts with proper metadata.
+
+## Development Process
+
+### Planning Phase
+I started by researching other developer portfolios for inspiration, then created wireframes in Figma to plan the layout and user experience.
+
+### Development Setup
+Setting up the development environment with all the tools and configurations took about a day. I made sure to include ESLint, Prettier, and proper TypeScript configuration.
+
+### Iterative Development
+I built the portfolio in iterations:
+1. Basic layout and navigation
+2. Home page and hero section
+3. Projects page and project details
+4. Blog functionality
+5. About and Uses pages
+6. Polish and optimization
+
+### Testing and Optimization
+Throughout development, I tested on different devices and browsers, optimized for performance, and ensured accessibility standards were met.
+
+## Lessons Learned
+
+### Start with Content
+I should have written the content before building the website. Having real content from the beginning would have helped make better design decisions.
+
+### Performance Matters
+Even for a portfolio website, performance is crucial. Slow loading times can negatively impact user experience and SEO.
+
+### Documentation is Key
+Documenting the development process and technical decisions made it easier to maintain and update the website later.
+
+### User Feedback is Valuable
+Getting feedback from friends and fellow developers helped identify usability issues I hadn't noticed.
+
+## Future Improvements
+
+While I'm happy with the current version, there are several improvements I plan to make:
+
+- [ ] Add a contact form with email integration
+- [ ] Implement analytics to understand visitor behavior
+- [ ] Add more interactive project demos
+- [ ] Create a newsletter signup
+- [ ] Add multilingual support
+
+## Deployment and Hosting
+
+I deployed the website on Vercel, which integrates seamlessly with Next.js. The deployment process is automatic - every push to the main branch triggers a new deployment.
+
+The domain is registered through Namecheap, and I configured the DNS to point to Vercel's servers.
+
+## Conclusion
+
+Building this portfolio website has been an incredibly rewarding experience. It's not just a showcase of my work, but a project I'm genuinely proud of. The combination of modern technologies, thoughtful design, and personal content creates something that truly represents who I am as a developer.
+
+If you're a student or developer thinking about building your own portfolio, I highly recommend it. The process teaches you so much about web development, and the result is something uniquely yours.
+
+You can check out the source code on [GitHub](https://github.com/yourusername/portfolio) and see the live website at [yourname.dev](https://yourname.dev).
+
+What do you think? I'd love to hear your feedback and answer any questions about the development process!
+

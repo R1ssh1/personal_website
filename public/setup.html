@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Admin Setup</title>
+</head>
+
+<body>
+    <h1>Admin Setup</h1>
+    <button onclick="runSetup()">Run Setup</button>
+    <div id="result"></div>
+
+    <script>
+        async function runSetup() {
+            try {
+                const response = await fetch('/api/setup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+                document.getElementById('result').innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+
+                if (data.message) {
+                    alert('Setup completed! Default credentials: admin / portfolio123');
+                }
+            } catch (error) {
+                console.error('Setup error:', error);
+                document.getElementById('result').innerHTML = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
