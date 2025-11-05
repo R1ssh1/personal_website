@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { ProjectMetadata } from '@/lib/mdx'
 import { Project } from '@/types'
+import { MagicBento } from '@/components/reactbits/MagicBento'
 
 interface ProjectCardProps {
     project: ProjectMetadata | Project
@@ -36,7 +37,8 @@ export function ProjectCard({ project }: ProjectCardProps) {
             className="group"
         >
             <Link href={isDatabaseProject(project) ? `/projects/db/${project.id}` : `/projects/${project.slug}`}>
-                <div className="h-full p-6 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 hover:shadow-lg bg-white dark:bg-gray-800">
+                <MagicBento className="h-full">
+                    <div className="h-full p-6 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 hover:shadow-lg bg-white dark:bg-gray-800">
                     {displayProject.image && (
                         <div className="mb-4 overflow-hidden rounded-lg">
                             <img
@@ -103,6 +105,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
                         </div>
                     </div>
                 </div>
+                </MagicBento>
             </Link>
         </motion.div>
     )

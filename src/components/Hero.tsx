@@ -3,6 +3,8 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
 import Link from 'next/link'
 import { useState, useRef } from 'react'
+import { ShinyText } from '@/components/reactbits/ShinyText'
+import { StarBorder } from '@/components/reactbits/StarBorder'
 
 export function Hero() {
   const [emailCopied, setEmailCopied] = useState(false)
@@ -95,24 +97,10 @@ export function Hero() {
               className="text-accent inline-block relative"
               whileHover={{
                 scale: 1.05,
-                textShadow: "0 0 30px rgba(59, 130, 246, 0.6)",
                 y: -2
               }}
             >
-              <motion.span
-                className="absolute inset-0 text-accent blur-sm opacity-50"
-                animate={{
-                  opacity: [0.3, 0.6, 0.3]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                Rishi Jha
-              </motion.span>
-              <span className="relative z-10">Rishi Jha</span>
+              <ShinyText text="Rishi Jha" className="text-accent" pulseInterval={10000} />
             </motion.span>
           </h1>
 
@@ -155,10 +143,11 @@ export function Hero() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="relative group"
             >
-              <Link
-                href="/projects"
-                className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-accent via-blue-600 to-purple-600 text-white rounded-xl transition-all duration-500 font-semibold shadow-xl hover:shadow-accent/40 overflow-hidden transform-gpu"
-              >
+              <StarBorder speed={6}>
+                <Link
+                  href="/projects"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-accent via-blue-600 to-purple-600 text-white rounded-xl transition-all duration-500 font-semibold shadow-xl hover:shadow-accent/40 overflow-hidden transform-gpu"
+                >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-accent opacity-0 group-hover:opacity-100"
                   initial={{ scale: 1.5, opacity: 0 }}
@@ -219,6 +208,7 @@ export function Hero() {
                   </motion.span>
                 </span>
               </Link>
+              </StarBorder>
             </motion.div>
 
             <motion.div

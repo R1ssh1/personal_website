@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { Certification } from '@/types'
 import { getImageUrl } from '@/lib/image-utils'
+import { MagicBento } from '@/components/reactbits/MagicBento'
 
 interface CertificateCardProps {
   certification: Certification
@@ -21,12 +22,13 @@ export function CertificateCard({ certification, onClick }: CertificateCardProps
   const isExpired = certification.expirationDate && new Date(certification.expirationDate) < new Date()
 
   return (
-    <motion.div
-      className="relative group cursor-pointer bg-secondary/20 rounded-xl overflow-hidden aspect-[4/3]"
-      onClick={onClick}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.2 }}
-    >
+    <MagicBento>
+      <motion.div
+        className="relative group cursor-pointer bg-secondary/20 rounded-xl overflow-hidden aspect-[4/3]"
+        onClick={onClick}
+        whileHover={{ y: -4 }}
+        transition={{ duration: 0.2 }}
+      >
       {/* Certificate Image */}
       <div className="relative w-full h-full">
         <Image
@@ -61,5 +63,6 @@ export function CertificateCard({ certification, onClick }: CertificateCardProps
         )}
       </div>
     </motion.div>
+    </MagicBento>
   )
 }

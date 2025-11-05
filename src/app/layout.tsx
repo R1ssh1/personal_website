@@ -4,6 +4,7 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Navigation } from '@/components/Navigation'
+import { Beams } from '@/components/reactbits/Beams'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,6 +27,10 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-nav">
         <ThemeProvider>
+          {/* Beams background - appears on all pages */}
+          <div className="fixed inset-0 -z-10">
+            <Beams />
+          </div>
           <Navigation />
           <main className="relative z-10">
             {children}

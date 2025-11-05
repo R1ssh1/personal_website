@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { BlogMetadata } from '@/lib/mdx'
 import { BlogPost } from '@/types'
+import { MagicBento } from '@/components/reactbits/MagicBento'
 
 interface BlogCardProps {
     post: BlogMetadata | BlogPost
@@ -35,7 +36,8 @@ export function BlogCard({ post }: BlogCardProps) {
             className="group"
         >
             <Link href={isDatabasePost(post) ? `/blog/db/${post.id}` : `/blog/${post.slug}`}>
-                <article className="h-full p-6 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 hover:shadow-lg bg-white dark:bg-gray-800">
+                <MagicBento className="h-full">
+                    <article className="h-full p-6 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-all duration-200 hover:shadow-lg bg-white dark:bg-gray-800">
                     <div className="flex items-start justify-between mb-3">
                         <h2 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
                             {displayPost.title}
@@ -75,6 +77,7 @@ export function BlogCard({ post }: BlogCardProps) {
                         )}
                     </div>
                 </article>
+                </MagicBento>
             </Link>
         </motion.div>
     )
