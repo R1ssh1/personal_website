@@ -10,7 +10,11 @@
     "lint": "next lint",
     "setup-admin": "node scripts/setup-admin.js",
     "seed-certifications": "node scripts/seed-certifications.js",
-    "setup": "npm run setup-admin && npm run seed-certifications"
+    "setup": "npm run setup-admin && npm run seed-certifications",
+    "db:reset": "powershell -ExecutionPolicy Bypass -File scripts/reset-db.ps1",
+    "db:validate": "node scripts/validate-migration.js",
+    "export:mdx": "node scripts/export-mdx.js",
+    "validate:mdx": "node scripts/validate-mdx.js"
   },
   "keywords": [],
   "author": "",

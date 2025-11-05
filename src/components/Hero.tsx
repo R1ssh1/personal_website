@@ -80,102 +80,19 @@ export function Hero() {
       ref={ref}
       className="min-h-screen flex items-center justify-center px-4 pt-20 relative overflow-hidden"
     >
-      {/* Background elements */}
-      <div className="absolute inset-0 -z-10">
-        <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-accent/10 to-purple-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3],
-            x: [0, 20, 0],
-            y: [0, -10, 0]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-
-        <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.2, 0.5, 0.2],
-            x: [0, -15, 0],
-            y: [0, 15, 0]
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
-
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-accent/20 rounded-full blur-sm"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + (i % 2) * 40}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              x: [0, 10, 0],
-              opacity: [0.2, 0.6, 0.2],
-            }}
-            transition={{
-              duration: 4 + i * 0.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.2,
-            }}
-          />
-        ))}
-
-        <motion.div
-          className="absolute inset-0 bg-gradient-conic from-accent/5 via-transparent to-purple-500/5"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
-
       <motion.div
         className="max-w-4xl mx-auto text-center"
         style={{ y, opacity }}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.h1
+        <div>
+          <h1
             className="text-5xl md:text-7xl font-bold text-text mb-6 leading-tight cursor-default relative"
-            initial={{ opacity: 0, y: 30, rotateX: 20 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-            transition={{ duration: 1, delay: 0.1, ease: "easeOut" }}
-            whileHover={{ scale: 1.02 }}
           >
-            <motion.span
-              initial={{ opacity: 0.8 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
+            <span>
               Hi, I&apos;m{' '}
-            </motion.span>
+            </span>
             <motion.span
               className="text-accent inline-block relative"
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.5,
-                type: "spring",
-                stiffness: 200,
-                damping: 20
-              }}
               whileHover={{
                 scale: 1.05,
                 textShadow: "0 0 30px rgba(59, 130, 246, 0.6)",
@@ -197,13 +114,10 @@ export function Hero() {
               </motion.span>
               <span className="relative z-10">Rishi Jha</span>
             </motion.span>
-          </motion.h1>
+          </h1>
 
-          <motion.div
-            className="relative h-1 mx-auto mb-8 rounded-full overflow-hidden"
-            initial={{ width: 0 }}
-            animate={{ width: 160 }}
-            transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
+          <div
+            className="relative h-1 w-40 mx-auto mb-8 rounded-full overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-accent via-purple-500 to-pink-500" />
             <motion.div
@@ -216,35 +130,24 @@ export function Hero() {
                 delay: 2
               }}
             />
-          </motion.div>
+          </div>
 
-          <motion.p
+          <p
             className="text-xl md:text-2xl text-muted mb-8 font-medium"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            whileHover={{ scale: 1.02 }}
           >
             Computer Science Student & Software Developer
-          </motion.p>
+          </p>
 
-          <motion.p
+          <p
             className="text-lg text-muted mb-12 max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            whileHover={{ scale: 1.01 }}
           >
             Passionate about building innovative solutions and exploring the latest technologies.
             Currently in my 4th year of Computer Science, with a focus on full-stack development
             and modern web technologies.
-          </motion.p>
+          </p>
 
-          <motion.div
+          <div
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
           >
             <motion.div
               whileHover={{ scale: 1.05, y: -2 }}
@@ -356,23 +259,11 @@ export function Hero() {
                 </span>
               </Link>
             </motion.div>
-          </motion.div>
+          </div>
 
           {/* Social icons with magnetic attraction and velocity-based rotation */}
-          <motion.div
+          <div
             className="flex justify-center space-x-8"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.15,
-                  delayChildren: 0.6
-                }
-              }
-            }}
           >
             {/* GitHub Icon */}
             <motion.a
@@ -504,7 +395,7 @@ export function Hero() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </motion.svg>
             </motion.button>
-          </motion.div>
+          </div>
 
           {/* Email copied notification */}
           {emailCopied && (
@@ -541,7 +432,7 @@ export function Hero() {
               </motion.div>
             </motion.div>
           )}
-        </motion.div>
+        </div>
       </motion.div>
     </motion.section>
   )

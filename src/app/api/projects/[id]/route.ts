@@ -50,7 +50,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     // If it looks like a UUID, treat as database ID
     if (isUUID(id)) {
-      const project = projectsDb.getById(id);
+      const project = await projectsDb.getById(id);
       if (!project) {
         return NextResponse.json(
           { error: 'Project not found', success: false },
@@ -76,7 +76,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     // Then, try to find in database by matching slug to title
-    const allDbProjects = projectsDb.getAll() as unknown as ProjectRow[];
+    const allDbProjects = await projectsDb.getAll() as unknown as ProjectRow[];
     const dbProject = allDbProjects.find(project =>
       getProjectSlugFromTitle(project.title) === id
     );

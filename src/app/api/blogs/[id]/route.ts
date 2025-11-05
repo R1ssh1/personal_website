@@ -55,7 +55,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 
     // If it looks like a UUID, treat as database ID
     if (isUUID(id)) {
-      const blog = blogPostsDb.getById(id);
+      const blog = await blogPostsDb.getById(id);
       if (!blog) {
         return NextResponse.json(
           { error: 'Blog post not found', success: false },
@@ -81,7 +81,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     // Then, try to find in database by matching slug to title
-    const allDbPosts = blogPostsDb.getAll() as unknown as BlogPostRow[];
+    const allDbPosts = await blogPostsDb.getAll() as unknown as BlogPostRow[];
     const dbPost = allDbPosts.find(post =>
       getBlogSlugFromTitle(post.title) === id
     );

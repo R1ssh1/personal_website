@@ -24,10 +24,21 @@ export default function CertificationsPage() {
         throw new Error('Failed to fetch certifications')
       }
       const data = await response.json()
-      setCertifications(data)
+
+      // Ensure data is an array
+      if (Array.isArray(data)) {
+        setCertifications(data)
+      } else if (data && typeof data === 'object' && data.certifications && Array.isArray(data.certifications)) {
+        // Handle case where API returns { certifications: [...] }
+        setCertifications(data.certifications)
+      } else {
+        console.error('Unexpected data format:', data)
+        setCertifications([])
+      }
     } catch (error) {
       console.error('Error fetching certifications:', error)
       setError('Failed to load certifications')
+      setCertifications([])
     } finally {
       setIsLoading(false)
     }
@@ -84,12 +95,7 @@ export default function CertificationsPage() {
         <div className="relative z-10 pt-32 px-4">
           <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              className="text-center mb-16"
-            >
+            <div className="text-center mb-16">
               <h1 className="font-logo text-4xl md:text-5xl lg:text-6xl font-bold text-text mb-6">
                 Certifications
               </h1>
@@ -105,16 +111,11 @@ export default function CertificationsPage() {
                   </span>
                 </div>
               )}
-            </motion.div>
+            </div>
 
             {/* Certifications Grid */}
             {certifications.length === 0 ? (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="text-center py-16"
-              >
+              <div className="text-center py-16">
                 <div className="glass-morphism rounded-2xl p-12 max-w-md mx-auto">
                   <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-accent/20">
                     <svg className="w-8 h-8 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -126,28 +127,18 @@ export default function CertificationsPage() {
                     Certifications will appear here once they are added to the portfolio.
                   </p>
                 </div>
-              </motion.div>
+              </div>
             ) : (
-              <motion.div
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-              >
-                {certifications.map((certification, index) => (
-                  <motion.div
-                    key={certification.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.1 + index * 0.1 }}
-                  >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                {certifications.map((certification) => (
+                  <div key={certification.id}>
                     <CertificateCard
                       certification={certification}
                       onClick={() => handleCertificateClick(certification)}
                     />
-                  </motion.div>
+                  </div>
                 ))}
-              </motion.div>
+              </div>
             )}
 
             {/* Bottom spacing */}

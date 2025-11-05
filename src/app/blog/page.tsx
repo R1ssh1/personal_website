@@ -1,5 +1,10 @@
 'use client'
 
+// NOTE: This page displays blog posts from BOTH sources:
+// 1. Static MDX files (content/blog/*.mdx)
+// 2. Database records (via /api/blogs endpoint)
+// See .github/copilot-instructions.md for MDX + Database sync pattern
+
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { BlogPost } from '@/types'
@@ -58,49 +63,29 @@ export default function BlogPage() {
     return (
         <div className="min-h-screen pt-32 px-4 bg-background">
             <div className="max-w-7xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
-                >
+                <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
                         Blog
                     </h1>
                     <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
                         Thoughts on technology, software development, and my journey as a computer science student.
                     </p>
-                </motion.div>
+                </div>
 
                 {posts.length === 0 ? (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-center py-16"
-                    >
+                    <div className="text-center py-16">
                         <p className="text-muted-foreground text-lg">
                             No blog posts yet. Check back soon for updates!
                         </p>
-                    </motion.div>
+                    </div>
                 ) : (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                    >
-                        {posts.map((post, index) => (
-                            <motion.div
-                                key={post.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1 * index }}
-                            >
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {posts.map((post) => (
+                            <div key={post.id}>
                                 <BlogCard post={post} />
-                            </motion.div>
+                            </div>
                         ))}
-                    </motion.div>
+                    </div>
                 )}
             </div>
         </div>

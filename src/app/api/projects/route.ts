@@ -16,7 +16,7 @@ const createProjectSchema = z.object({
 // GET /api/projects - Get all projects
 export async function GET() {
   try {
-    const projects = projectsDb.getAll();
+    const projects = await projectsDb.getAll();
     return NextResponse.json({ success: true, projects });
   } catch (error) {
     console.error('Get projects error:', error);

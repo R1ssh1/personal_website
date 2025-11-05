@@ -1,5 +1,10 @@
 'use client'
 
+// NOTE: This page displays projects from BOTH sources:
+// 1. Static MDX files (content/projects/*.mdx)
+// 2. Database records (via /api/projects endpoint)
+// See .github/copilot-instructions.md for MDX + Database sync pattern
+
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { Project } from '@/types'
@@ -58,12 +63,7 @@ export default function ProjectsPage() {
     return (
         <div className="min-h-screen pt-32 px-4 bg-background">
             <div className="max-w-7xl mx-auto">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    className="text-center mb-16"
-                >
+                <div className="text-center mb-16">
                     <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
                         My Projects
                     </h1>
@@ -71,37 +71,22 @@ export default function ProjectsPage() {
                         A collection of projects I&apos;ve worked on, showcasing my skills in various technologies
                         and my passion for creating innovative solutions.
                     </p>
-                </motion.div>
+                </div>
 
                 {projects.length === 0 ? (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-center py-16"
-                    >
+                    <div className="text-center py-16">
                         <p className="text-muted-foreground text-lg">
                             No projects found. Check back soon for updates!
                         </p>
-                    </motion.div>
+                    </div>
                 ) : (
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                        className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-                    >
-                        {projects.map((project, index) => (
-                            <motion.div
-                                key={project.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.1 * index }}
-                            >
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        {projects.map((project) => (
+                            <div key={project.id}>
                                 <ProjectCard project={project} />
-                            </motion.div>
+                            </div>
                         ))}
-                    </motion.div>
+                    </div>
                 )}
             </div>
         </div>
