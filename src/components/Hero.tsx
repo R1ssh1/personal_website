@@ -131,7 +131,7 @@ export function Hero() {
               <StarBorder color="rgba(59, 130, 246, 0.7)">
                 <Link
                   href="/projects"
-                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-accent/10 text-white border border-white/20 rounded-xl hover:bg-accent/20 transition-all duration-300 font-semibold backdrop-blur-[4px]"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-accent/10 text-white border border-white/20 rounded-xl hover:bg-accent/20 transition-all duration-300 font-semibold backdrop-blur-[2px]"
                 >
                   View My Projects
                 </Link>
