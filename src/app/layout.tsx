@@ -5,6 +5,7 @@ import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Navigation } from '@/components/Navigation'
 import { Beams } from '@/components/reactbits/Beams'
+// Beams component removed - will be reimplemented with proper TS+Tailwind
 
 const inter = Inter({
   subsets: ['latin'],
@@ -27,7 +28,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
       <body className="font-nav">
         <ThemeProvider>
-          {/* Beams background - appears on all pages */}
+          {/* Add Beams background */}
           <div className="fixed inset-0 -z-10">
             <Beams />
           </div>

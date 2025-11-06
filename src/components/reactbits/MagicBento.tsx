@@ -1,22 +1,17 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import React, { useState } from 'react';
 
 interface MagicBentoProps {
-  children: React.ReactNode
-  className?: string
-  glowColors?: string[]
-  speed?: number // animation duration in seconds
+  children?: React.ReactNode;
+  className?: string;
 }
 
 export const MagicBento: React.FC<MagicBentoProps> = ({
   children,
-  className = '',
-  glowColors = ['#3b82f6', '#8b5cf6', '#ec4899', '#10b981'], // blue, purple, pink, green
-  speed = 8, // slow ambient glow - 8 seconds
+  className = ''
 }) => {
-  const [isHovered, setIsHovered] = useState(false)
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
@@ -24,40 +19,35 @@ export const MagicBento: React.FC<MagicBentoProps> = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {children}
-      
-      {/* Animated border glow - only visible on hover */}
-      <motion.div
-        className="absolute inset-0 rounded-lg pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isHovered ? 1 : 0 }}
-        transition={{ duration: 0.3 }}
+      {/* Rotating gradient border */}
+      <div
+        className="absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 pointer-events-none"
         style={{
-          padding: '1px',
-          background: `linear-gradient(90deg, ${glowColors.join(', ')})`,
+          opacity: isHovered ? 1 : 0,
+          background: 'linear-gradient(60deg, #3b82f6, #8b5cf6, #ec4899, #10b981)',
+          backgroundSize: '300% 300%',
+          animation: isHovered ? 'gradient-rotate 8s linear infinite' : 'none',
+          padding: '2px',
           WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
           WebkitMaskComposite: 'xor',
-          maskComposite: 'exclude',
+          maskComposite: 'exclude'
         }}
-      >
-        <motion.div
-          className="absolute inset-0"
-          animate={{
-            background: [
-              `linear-gradient(0deg, ${glowColors.join(', ')})`,
-              `linear-gradient(90deg, ${glowColors.join(', ')})`,
-              `linear-gradient(180deg, ${glowColors.join(', ')})`,
-              `linear-gradient(270deg, ${glowColors.join(', ')})`,
-              `linear-gradient(360deg, ${glowColors.join(', ')})`,
-            ],
-          }}
-          transition={{
-            duration: speed,
-            repeat: Infinity,
-            ease: 'linear',
-          }}
-        />
-      </motion.div>
+      />
+      {children}
+      
+      <style jsx>{`
+        @keyframes gradient-rotate {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+      `}</style>
     </div>
-  )
-}
+  );
+};

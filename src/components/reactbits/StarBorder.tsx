@@ -1,96 +1,58 @@
 'use client'
 
-import React from 'react'
-import { motion } from 'framer-motion'
+import React, { useState } from 'react';
 
-interface StarBorderProps {
-  children: React.ReactNode
-  className?: string
-  speed?: number // loop duration in seconds
-  starColor?: string
-}
+type StarBorderProps<T extends React.ElementType> = React.ComponentPropsWithoutRef<T> & {
+  as?: T;
+  className?: string;
+  children?: React.ReactNode;
+  color?: string;
+  speed?: React.CSSProperties['animationDuration'];
+  thickness?: number;
+};
 
-export const StarBorder: React.FC<StarBorderProps> = ({
-  children,
+export const StarBorder = <T extends React.ElementType = 'div'>({
+  as,
   className = '',
-  speed = 6, // slow loop - 6 seconds
-  starColor = 'rgba(59, 130, 246, 0.7)', // blue/cyan theme
-}) => {
+  color = 'rgba(59, 130, 246, 0.7)',
+  speed = '3s',
+  thickness = 0.5,
+  children,
+  ...rest
+}: StarBorderProps<T>) => {
+  const Component = as || 'div';
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
-    <div className={`relative ${className}`}>
-      {children}
-      
-      {/* Animated stars traveling around border */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ overflow: 'visible' }}>
-        {/* Star 1 */}
-        <motion.circle
-          cx="0"
-          cy="0"
-          r="1.5"
-          fill={starColor}
-          initial={{ offsetDistance: '0%', opacity: 0 }}
-          animate={{
-            offsetDistance: ['0%', '100%'],
-            opacity: [0, 0.8, 0.8, 0],
-          }}
-          transition={{
-            duration: speed,
-            repeat: Infinity,
-            ease: [0.45, 0, 0.55, 1], // easeInOut for smooth corners
-            delay: 0,
-          }}
-          style={{
-            offsetPath: `path('M 0,8 L ${300},8 L ${300},${40} L 0,${40} Z')`,
-            offsetRotate: '0deg',
-          }}
-        />
-
-        {/* Star 2 */}
-        <motion.circle
-          cx="0"
-          cy="0"
-          r="1.5"
-          fill={starColor}
-          initial={{ offsetDistance: '0%', opacity: 0 }}
-          animate={{
-            offsetDistance: ['0%', '100%'],
-            opacity: [0, 0.6, 0.6, 0],
-          }}
-          transition={{
-            duration: speed,
-            repeat: Infinity,
-            ease: [0.45, 0, 0.55, 1],
-            delay: speed * 0.33,
-          }}
-          style={{
-            offsetPath: `path('M 0,8 L ${300},8 L ${300},${40} L 0,${40} Z')`,
-            offsetRotate: '0deg',
-          }}
-        />
-
-        {/* Star 3 */}
-        <motion.circle
-          cx="0"
-          cy="0"
-          r="1.5"
-          fill={starColor}
-          initial={{ offsetDistance: '0%', opacity: 0 }}
-          animate={{
-            offsetDistance: ['0%', '100%'],
-            opacity: [0, 0.7, 0.7, 0],
-          }}
-          transition={{
-            duration: speed,
-            repeat: Infinity,
-            ease: [0.45, 0, 0.55, 1],
-            delay: speed * 0.66,
-          }}
-          style={{
-            offsetPath: `path('M 0,8 L ${300},8 L ${300},${40} L 0,${40} Z')`,
-            offsetRotate: '0deg',
-          }}
-        />
-      </svg>
-    </div>
-  )
-}
+    <Component
+      className={`group relative inline-block overflow-hidden rounded-xl ${className}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      {...(rest as any)}
+      style={{
+        padding: `${thickness}px 0`,
+        ...(rest as any).style
+      }}
+    >
+      <div
+        className="absolute w-[300%] h-[30%] bottom-[-11px] right-[-250%] rounded-full z-0 transition-all duration-300"
+        style={{
+          background: `radial-gradient(circle, ${color}, transparent 10%)`,
+          animation: `star-movement-bottom ${isHovered ? '1.5s' : '3s'} ease-in-out infinite alternate`,
+          opacity: isHovered ? 1 : 0.7
+        }}
+      />
+      <div
+        className="absolute w-[300%] h-[30%] top-[-10px] left-[-250%] rounded-full z-0 transition-all duration-300"
+        style={{
+          background: `radial-gradient(circle, ${color}, transparent 10%)`,
+          animation: `star-movement-top ${isHovered ? '1.5s' : '3s'} ease-in-out infinite alternate`,
+          opacity: isHovered ? 1 : 0.7
+        }}
+      />
+      <div className="relative z-10">
+        {children}
+      </div>
+    </Component>
+  );
+};

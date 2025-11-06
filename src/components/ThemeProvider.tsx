@@ -13,7 +13,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       disableTransitionOnChange={false}
       {...props}
     >
-      <div className="starry-bg bg-primary text-text min-h-screen transition-colors duration-300">
+      <div className="bg-primary text-text min-h-screen transition-colors duration-300">
         {children}
       </div>
     </NextThemesProvider>

@@ -1,61 +1,99 @@
 'use client'
 
-import React, { useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import React, { useRef } from 'react';
 
 interface GlareHoverProps {
-  children: React.ReactNode
-  className?: string
-  intensity?: 'subtle' | 'moderate' | 'prominent'
-  duration?: number
+  children?: React.ReactNode;
+  glareColor?: string;
+  glareOpacity?: number;
+  glareAngle?: number;
+  glareSize?: number;
+  transitionDuration?: number;
+  playOnce?: boolean;
+  className?: string;
+  intensity?: 'subtle' | 'medium' | 'strong';
 }
 
 export const GlareHover: React.FC<GlareHoverProps> = ({
   children,
+  glareColor = '#ffffff',
+  glareOpacity = 0.4,
+  glareAngle = -45,
+  glareSize = 250,
+  transitionDuration = 700,
+  playOnce = false,
   className = '',
-  intensity = 'subtle',
-  duration = 0.35,
+  intensity = 'subtle'
 }) => {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [glarePosition, setGlarePosition] = useState({ x: 50, y: 50 })
-  const [isHovered, setIsHovered] = useState(false)
+  // Map intensity to opacity
+  const intensityMap = {
+    subtle: 0.2,
+    medium: 0.35,
+    strong: 0.5
+  };
 
-  const intensityValues = {
-    subtle: 0.12,
-    moderate: 0.2,
-    prominent: 0.35,
+  const finalOpacity = glareOpacity || intensityMap[intensity];
+
+  const hex = glareColor.replace('#', '');
+  let rgba = glareColor;
+  if (/^[\dA-Fa-f]{6}$/.test(hex)) {
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    rgba = `rgba(${r}, ${g}, ${b}, ${finalOpacity})`;
+  } else if (/^[\dA-Fa-f]{3}$/.test(hex)) {
+    const r = parseInt(hex[0] + hex[0], 16);
+    const g = parseInt(hex[1] + hex[1], 16);
+    const b = parseInt(hex[2] + hex[2], 16);
+    rgba = `rgba(${r}, ${g}, ${b}, ${finalOpacity})`;
   }
 
-  const glareOpacity = intensityValues[intensity]
+  const overlayRef = useRef<HTMLDivElement | null>(null);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return
+  const animateIn = () => {
+    const el = overlayRef.current;
+    if (!el) return;
 
-    const rect = containerRef.current.getBoundingClientRect()
-    const x = ((e.clientX - rect.left) / rect.width) * 100
-    const y = ((e.clientY - rect.top) / rect.height) * 100
+    el.style.transition = 'none';
+    el.style.backgroundPosition = '-100% -100%, 0 0';
+    el.style.transition = `${transitionDuration}ms ease`;
+    el.style.backgroundPosition = '100% 100%, 0 0';
+  };
 
-    setGlarePosition({ x, y })
-  }
+  const animateOut = () => {
+    const el = overlayRef.current;
+    if (!el) return;
+
+    if (playOnce) {
+      el.style.transition = 'none';
+      el.style.backgroundPosition = '-100% -100%, 0 0';
+    } else {
+      el.style.transition = `${transitionDuration}ms ease`;
+      el.style.backgroundPosition = '-100% -100%, 0 0';
+    }
+  };
+
+  const overlayStyle: React.CSSProperties = {
+    position: 'absolute',
+    inset: 0,
+    background: `linear-gradient(${glareAngle}deg,
+        hsla(0,0%,0%,0) 60%,
+        ${rgba} 70%,
+        hsla(0,0%,0%,0) 100%)`,
+    backgroundSize: `${glareSize}% ${glareSize}%, 100% 100%`,
+    backgroundRepeat: 'no-repeat',
+    backgroundPosition: '-100% -100%, 0 0',
+    pointerEvents: 'none'
+  };
 
   return (
     <div
-      ref={containerRef}
-      className={`relative overflow-hidden ${className}`}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className={`relative cursor-pointer ${className}`}
+      onMouseEnter={animateIn}
+      onMouseLeave={animateOut}
     >
+      <div ref={overlayRef} style={overlayStyle} />
       {children}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isHovered ? glareOpacity : 0 }}
-        transition={{ duration }}
-        style={{
-          background: `radial-gradient(circle 400px at ${glarePosition.x}% ${glarePosition.y}%, rgba(59, 130, 246, 0.4), transparent 40%)`,
-        }}
-      />
     </div>
-  )
-}
+  );
+};

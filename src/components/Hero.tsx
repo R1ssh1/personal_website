@@ -80,45 +80,30 @@ export function Hero() {
   return (
     <motion.section
       ref={ref}
-      className="min-h-screen flex items-center justify-center px-4 pt-20 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center px-4 pt-20 pb-32 relative"
     >
-      <motion.div
-        className="max-w-4xl mx-auto text-center"
-        style={{ y, opacity }}
-      >
+      <div className="max-w-4xl mx-auto text-center">
         <div>
           <h1
-            className="text-5xl md:text-7xl font-bold text-text mb-6 leading-tight cursor-default relative"
+            className="font-bold text-text leading-relaxed cursor-default relative pt-12 pb-12 mb-8 overflow-visible min-h-[120px] md:min-h-[140px]"
           >
-            <span>
+            <span className="text-3xl md:text-5xl">
               Hi, I&apos;m{' '}
             </span>
             <motion.span
-              className="text-accent inline-block relative"
+              className="inline-block text-accent relative min-h-[80px] md:min-h-[100px]"
               whileHover={{
                 scale: 1.05,
                 y: -2
               }}
             >
-              <ShinyText text="Rishi Jha" className="text-accent" pulseInterval={10000} />
+              <ShinyText
+                text="Rishi Jha"
+                className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-gray-100 to-gray-500 bg-clip-text text-transparent font-logo whitespace-nowrap"
+                speed={4}
+              />
             </motion.span>
           </h1>
-
-          <div
-            className="relative h-1 w-40 mx-auto mb-8 rounded-full overflow-hidden"
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-accent via-purple-500 to-pink-500" />
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-white/50 via-white/80 to-white/50"
-              animate={{ x: ['-100%', '100%'] }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2
-              }}
-            />
-          </div>
 
           <p
             className="text-xl md:text-2xl text-muted mb-8 font-medium"
@@ -143,71 +128,13 @@ export function Hero() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="relative group"
             >
-              <StarBorder speed={6}>
+              <StarBorder color="rgba(59, 130, 246, 0.7)">
                 <Link
                   href="/projects"
-                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-accent via-blue-600 to-purple-600 text-white rounded-xl transition-all duration-500 font-semibold shadow-xl hover:shadow-accent/40 overflow-hidden transform-gpu"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-accent/10 text-white border border-white/20 rounded-xl hover:bg-accent/20 transition-all duration-300 font-semibold backdrop-blur-[4px]"
                 >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-accent opacity-0 group-hover:opacity-100"
-                  initial={{ scale: 1.5, opacity: 0 }}
-                  whileHover={{
-                    scale: 1,
-                    opacity: 1,
-                    transition: {
-                      duration: 0.6,
-                      ease: "easeOut"
-                    }
-                  }}
-                />
-
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full"
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                />
-
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-accent via-purple-600 to-blue-600 rounded-xl blur opacity-30 group-hover:opacity-70 transition-opacity duration-500" />
-
-                <span className="relative z-10 flex items-center justify-center gap-3 text-center">
-                  <motion.span
-                    className="font-semibold tracking-wide"
-                  >
-                    View My Projects
-                  </motion.span>
-                  <motion.span
-                    animate={{
-                      x: [0, 4, 0],
-                      rotate: [0, 5, 0]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 0.5
-                    }}
-                    whileHover={{
-                      x: 6,
-                      rotate: 15,
-                      scale: 1.1
-                    }}
-                    className="inline-flex items-center justify-center"
-                  >
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="flex-shrink-0 drop-shadow-sm"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </motion.span>
-                </span>
-              </Link>
+                  View My Projects
+                </Link>
               </StarBorder>
             </motion.div>
 
@@ -219,7 +146,7 @@ export function Hero() {
             >
               <Link
                 href="/about"
-                className="group relative inline-flex items-center justify-center px-8 py-4 glass-morphism text-text hover:text-white border border-secondary/30 hover:border-accent/50 rounded-xl transition-all duration-500 font-semibold backdrop-blur-sm overflow-hidden transform-gpu"
+                className="group relative inline-flex items-center justify-center mb-2 px-8 py-4 glass-morphism text-text hover:text-white border border-secondary/30 hover:border-accent/50 rounded-xl transition-all duration-500 font-semibold backdrop-blur-sm overflow-hidden transform-gpu"
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-accent/80 to-purple-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -260,7 +187,7 @@ export function Hero() {
               href="https://github.com/R1ssh1"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-accent transition-all duration-500 rounded-xl border border-secondary/20 hover:border-accent/40 backdrop-blur-sm overflow-hidden cursor-pointer"
+              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-accent transition-all duration-500 rounded-xl border border-secondary/20 hover:border-purple-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
               aria-label="GitHub"
               variants={{
                 hidden: { opacity: 0, y: 20, scale: 0.8, rotateX: -45 },
@@ -268,8 +195,7 @@ export function Hero() {
               }}
               whileHover={{
                 scale: 1.15,
-                y: -4,
-                boxShadow: "0 15px 35px rgba(0,0,0,0.15)"
+                y: -4
               }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -277,11 +203,6 @@ export function Hero() {
               onMouseLeave={() => handleMouseLeave(githubX, githubY, githubRotation)}
               style={{ x: githubX, y: githubY }}
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-accent/30 to-purple-600/30 rounded-xl opacity-0 group-hover:opacity-100"
-                transition={{ duration: 0.4 }}
-              />
-
               <motion.svg
                 className="relative z-10 w-7 h-7"
                 fill="currentColor"
@@ -305,8 +226,7 @@ export function Hero() {
               }}
               whileHover={{
                 scale: 1.15,
-                y: -4,
-                boxShadow: "0 15px 35px rgba(59, 130, 246, 0.2)"
+                y: -4
               }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -314,11 +234,6 @@ export function Hero() {
               onMouseLeave={() => handleMouseLeave(linkedinX, linkedinY, linkedinRotation)}
               style={{ x: linkedinX, y: linkedinY }}
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-blue-600/30 rounded-xl opacity-0 group-hover:opacity-100"
-                transition={{ duration: 0.4 }}
-              />
-
               <motion.svg
                 className="relative z-10 w-7 h-7"
                 fill="currentColor"
@@ -339,8 +254,7 @@ export function Hero() {
               }}
               whileHover={{
                 scale: 1.15,
-                y: -4,
-                boxShadow: "0 15px 35px rgba(34, 197, 94, 0.2)"
+                y: -4
               }}
               whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -370,11 +284,6 @@ export function Hero() {
                 }
               }}
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-green-500/30 to-emerald-500/30 rounded-xl opacity-0 group-hover:opacity-100"
-                transition={{ duration: 0.4 }}
-              />
-
               <motion.svg
                 className="relative z-10 w-7 h-7"
                 fill="none"
@@ -423,7 +332,7 @@ export function Hero() {
             </motion.div>
           )}
         </div>
-      </motion.div>
+      </div>
     </motion.section>
   )
 }
