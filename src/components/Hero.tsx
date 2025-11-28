@@ -128,7 +128,7 @@ export function Hero() {
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
               className="relative group"
             >
-              <StarBorder color="rgba(59, 130, 246, 0.7)">
+              <StarBorder color="rgba(121, 173, 255, 1)">
                 <Link
                   href="/projects"
                   className="group relative inline-flex items-center justify-center px-8 py-4 bg-accent/10 text-white border border-white/20 rounded-xl hover:bg-accent/20 transition-all duration-300 font-semibold backdrop-blur-[2px]"
