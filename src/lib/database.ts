@@ -1,6 +1,6 @@
 import Database from 'better-sqlite3'
 import path from 'path'
-import { Certification, Project, BlogPost, AdminUser, AdminSession } from '@/types'
+import { Certification, Project, BlogPost, AdminUser, AdminSession, AboutContent, ContactFormSubmission } from '@/types'
 
 const dbPath = path.join(process.cwd(), 'data', 'portfolio.db')
 
@@ -88,6 +88,29 @@ export function initializeDatabase() {
     )
   `)
 
+  // About content table (single row for about page)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS about_content (
+      id TEXT PRIMARY KEY,
+      content TEXT NOT NULL,
+      updated_at TEXT NOT NULL,
+      updated_by TEXT
+    )
+  `)
+
+  // Contact form submissions table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS contact_submissions (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      organisation TEXT,
+      contact_info TEXT NOT NULL,
+      message TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      read INTEGER NOT NULL DEFAULT 0
+    )
+  `)
+
   // Add migration for existing tables that might not have all columns
   migrateTables()
 }
@@ -110,6 +133,16 @@ function migrateTables() {
       if (!blogColumnNames.includes('published')) {
         db.exec(`ALTER TABLE blog_posts ADD COLUMN published INTEGER NOT NULL DEFAULT 0`)
       }
+    }
+
+    // Check if projects table needs images column
+    const projectColumns = db.prepare("PRAGMA table_info(projects)").all() as any[]
+    const projectColumnNames = projectColumns.map(col => col.name)
+
+    if (projectColumns.length > 0 && !projectColumnNames.includes('images')) {
+      // Add images column to store array of image URLs as JSON
+      db.exec(`ALTER TABLE projects ADD COLUMN images TEXT DEFAULT '[]'`)
+      console.log('✅ Added images column to projects table')
     }
   } catch (error) {
     console.log('Migration info:', error)
@@ -341,7 +374,7 @@ export const projectsDb = {
       techStack: row.technologies ? JSON.parse(row.technologies) : [],
       githubLink: row.github || '',
       liveDemoLink: row.demo || '',
-      images: [], // Not stored in current schema, use empty array
+      images: row.images ? JSON.parse(row.images) : (row.image_url ? [row.image_url] : []),
       createdAt: row.created_at,
       updatedAt: row.updated_at
     }))
@@ -359,7 +392,7 @@ export const projectsDb = {
       techStack: row.technologies ? JSON.parse(row.technologies) : [],
       githubLink: row.github || '',
       liveDemoLink: row.demo || '',
-      images: [], // Not stored in current schema, use empty array
+      images: row.images ? JSON.parse(row.images) : (row.image_url ? [row.image_url] : []),
       createdAt: row.created_at,
       updatedAt: row.updated_at
     }
@@ -371,10 +404,11 @@ export const projectsDb = {
 
     const stmt = db.prepare(`
       INSERT INTO projects 
-      (id, title, description, technologies, github, demo, image_url, summary, date, featured, created_at, updated_at)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      (id, title, description, technologies, github, demo, image_url, images, summary, date, featured, created_at, updated_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `)
 
+    const imagesArray = project.images || []
     stmt.run(
       id,
       project.title,
@@ -382,7 +416,8 @@ export const projectsDb = {
       JSON.stringify(project.techStack || []),
       project.githubLink || '',
       project.liveDemoLink || '',
-      project.images?.[0] || '', // Use first image as main image
+      imagesArray[0] || '', // Use first image as main image for backward compatibility
+      JSON.stringify(imagesArray), // Store full images array
       '', // summary - empty for now
       now.split('T')[0], // date as YYYY-MM-DD
       0, // featured - default false
@@ -420,7 +455,9 @@ export const projectsDb = {
     }
     if (project.images !== undefined) {
       fields.push('image_url = ?')
-      values.push(project.images?.[0] || '') // Use first image
+      values.push(project.images?.[0] || '') // Use first image for backward compatibility
+      fields.push('images = ?')
+      values.push(JSON.stringify(project.images || [])) // Store full images array
     }
 
     fields.push('updated_at = ?')
@@ -568,6 +605,110 @@ export const blogPostsDb = {
 
   delete: (id: string): boolean => {
     const stmt = db.prepare('DELETE FROM blog_posts WHERE id = ?')
+    const result = stmt.run(id)
+    return result.changes > 0
+  }
+}
+
+// Database operations for about content
+export const aboutContentDb = {
+  get: (): AboutContent | null => {
+    const stmt = db.prepare('SELECT * FROM about_content LIMIT 1')
+    const row = stmt.get() as any
+    if (!row) return null
+
+    return {
+      id: row.id,
+      content: row.content,
+      updatedAt: row.updated_at,
+      updatedBy: row.updated_by
+    }
+  },
+
+  upsert: (content: string, updatedBy?: string): string => {
+    const now = new Date().toISOString()
+    const existing = aboutContentDb.get()
+
+    if (existing) {
+      const stmt = db.prepare(`
+        UPDATE about_content SET content = ?, updated_at = ?, updated_by = ? WHERE id = ?
+      `)
+      stmt.run(content, now, updatedBy || null, existing.id)
+      return existing.id
+    } else {
+      const id = crypto.randomUUID()
+      const stmt = db.prepare(`
+        INSERT INTO about_content (id, content, updated_at, updated_by)
+        VALUES (?, ?, ?, ?)
+      `)
+      stmt.run(id, content, now, updatedBy || null)
+      return id
+    }
+  }
+}
+
+// Database operations for contact form submissions
+export const contactSubmissionsDb = {
+  getAll: (): ContactFormSubmission[] => {
+    const stmt = db.prepare('SELECT * FROM contact_submissions ORDER BY created_at DESC')
+    const rows = stmt.all() as any[]
+    return rows.map((row: any) => ({
+      id: row.id,
+      name: row.name,
+      organisation: row.organisation,
+      contactInfo: row.contact_info,
+      message: row.message,
+      createdAt: row.created_at,
+      read: Boolean(row.read)
+    }))
+  },
+
+  getById: (id: string): ContactFormSubmission | null => {
+    const stmt = db.prepare('SELECT * FROM contact_submissions WHERE id = ?')
+    const row = stmt.get(id) as any
+    if (!row) return null
+
+    return {
+      id: row.id,
+      name: row.name,
+      organisation: row.organisation,
+      contactInfo: row.contact_info,
+      message: row.message,
+      createdAt: row.created_at,
+      read: Boolean(row.read)
+    }
+  },
+
+  create: (submission: Omit<ContactFormSubmission, 'id' | 'createdAt' | 'read'>): string => {
+    const id = crypto.randomUUID()
+    const now = new Date().toISOString()
+
+    const stmt = db.prepare(`
+      INSERT INTO contact_submissions (id, name, organisation, contact_info, message, created_at, read)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `)
+
+    stmt.run(
+      id,
+      submission.name,
+      submission.organisation || null,
+      submission.contactInfo,
+      submission.message,
+      now,
+      0
+    )
+
+    return id
+  },
+
+  markAsRead: (id: string): boolean => {
+    const stmt = db.prepare('UPDATE contact_submissions SET read = 1 WHERE id = ?')
+    const result = stmt.run(id)
+    return result.changes > 0
+  },
+
+  delete: (id: string): boolean => {
+    const stmt = db.prepare('DELETE FROM contact_submissions WHERE id = ?')
     const result = stmt.run(id)
     return result.changes > 0
   }

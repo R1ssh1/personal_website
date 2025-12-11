@@ -524,7 +524,7 @@ export default function AlgorithmVisualizer() {
     if (element.isPivot) return 'bg-yellow-500'
     if (element.isSwapping) return 'bg-red-500'
     if (element.isComparing) return 'bg-blue-500'
-    return 'bg-accent'
+    return 'bg-purple-500'
   }
 
   const maxValue = Math.max(...array.map(el => el.value))
@@ -533,20 +533,20 @@ export default function AlgorithmVisualizer() {
     <div className="flex flex-col items-center space-y-6 p-6">
       {/* Header */}
       <div className="text-center">
-        <h2 className="text-3xl font-bold text-foreground mb-2">📊 Algorithm Visualizer</h2>
-        <p className="text-muted-foreground">Watch sorting algorithms come to life</p>
+        <h2 className="text-3xl font-bold text-white mb-2">Algorithm Visualizer</h2>
+        <p className="text-white/60">Watch sorting algorithms come to life</p>
       </div>
 
       {/* Algorithm Info */}
-      <div className="bg-secondary/20 rounded-lg p-4 border border-secondary/30 max-w-2xl">
-        <h3 className="text-lg font-semibold text-foreground mb-2">{ALGORITHM_INFO[algorithm].name}</h3>
-        <p className="text-sm text-muted-foreground mb-2">{ALGORITHM_INFO[algorithm].description}</p>
+      <div className="bg-white/5 rounded-lg p-4 border border-white/10 max-w-2xl">
+        <h3 className="text-lg font-semibold text-white mb-2">{ALGORITHM_INFO[algorithm].name}</h3>
+        <p className="text-sm text-white/60 mb-2">{ALGORITHM_INFO[algorithm].description}</p>
         <div className="flex space-x-4 text-xs">
-          <span className="text-muted-foreground">
-            Time: <span className="text-accent font-mono">{ALGORITHM_INFO[algorithm].timeComplexity}</span>
+          <span className="text-white/60">
+            Time: <span className="text-sky-400 font-mono">{ALGORITHM_INFO[algorithm].timeComplexity}</span>
           </span>
-          <span className="text-muted-foreground">
-            Space: <span className="text-accent font-mono">{ALGORITHM_INFO[algorithm].spaceComplexity}</span>
+          <span className="text-white/60">
+            Space: <span className="text-sky-400 font-mono">{ALGORITHM_INFO[algorithm].spaceComplexity}</span>
           </span>
         </div>
       </div>
@@ -554,15 +554,15 @@ export default function AlgorithmVisualizer() {
       {/* Controls */}
       <div className="flex flex-wrap gap-4 items-center justify-center">
         {/* Algorithm Selection */}
-        <div className="flex space-x-2">
+        <div className="flex flex-wrap gap-2">
           {(Object.keys(ALGORITHM_INFO) as SortingAlgorithm[]).map((algo) => (
             <button
               key={algo}
               onClick={() => setAlgorithm(algo)}
               disabled={isRunning}
               className={`px-3 py-2 rounded-lg transition-colors text-sm ${algorithm === algo
-                  ? 'bg-accent text-white'
-                  : 'bg-secondary hover:bg-secondary/80 text-foreground'
+                ? 'bg-sky-500/30 text-sky-400 border border-sky-500/30'
+                : 'bg-white/5 hover:bg-white/10 text-white/70 border border-white/10'
                 } disabled:opacity-50`}
             >
               {ALGORITHM_INFO[algo].name}
@@ -572,7 +572,7 @@ export default function AlgorithmVisualizer() {
 
         {/* Speed Control */}
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-muted-foreground">Speed:</span>
+          <span className="text-sm text-white/60">Speed:</span>
           <input
             type="range"
             min="1"
@@ -582,12 +582,12 @@ export default function AlgorithmVisualizer() {
             disabled={isRunning}
             className="w-20"
           />
-          <span className="text-sm text-accent">{speed}</span>
+          <span className="text-sm text-sky-400">{speed}</span>
         </div>
 
         {/* Array Size */}
         <div className="flex items-center space-x-2">
-          <span className="text-sm text-muted-foreground">Size:</span>
+          <span className="text-sm text-white/60">Size:</span>
           <input
             type="range"
             min="5"
@@ -597,7 +597,7 @@ export default function AlgorithmVisualizer() {
             disabled={isRunning}
             className="w-20"
           />
-          <span className="text-sm text-accent">{arraySize}</span>
+          <span className="text-sm text-sky-400">{arraySize}</span>
         </div>
       </div>
 
@@ -606,21 +606,21 @@ export default function AlgorithmVisualizer() {
         <button
           onClick={startSorting}
           disabled={isRunning}
-          className="px-6 py-2 bg-accent hover:bg-accent/90 text-white rounded-lg transition-colors disabled:opacity-50"
+          className="px-6 py-2 bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 rounded-lg transition-colors disabled:opacity-50 border border-sky-500/30"
         >
           {isRunning ? 'Sorting...' : 'Start Sort'}
         </button>
         <button
           onClick={stopSorting}
           disabled={!isRunning}
-          className="px-6 py-2 bg-destructive hover:bg-destructive/90 text-white rounded-lg transition-colors disabled:opacity-50"
+          className="px-6 py-2 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition-colors disabled:opacity-50 border border-red-500/30"
         >
           Stop
         </button>
         <button
           onClick={resetArray}
           disabled={isRunning}
-          className="px-6 py-2 bg-secondary hover:bg-secondary/80 text-foreground rounded-lg transition-colors disabled:opacity-50"
+          className="px-6 py-2 bg-white/5 hover:bg-white/10 text-white/70 rounded-lg transition-colors disabled:opacity-50 border border-white/10"
         >
           Generate New Array
         </button>
@@ -628,26 +628,26 @@ export default function AlgorithmVisualizer() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 gap-4 text-center">
-        <div className="bg-secondary/20 rounded-lg p-3">
-          <div className="text-xl font-bold text-accent">{comparisons}</div>
-          <div className="text-sm text-muted-foreground">Comparisons</div>
+        <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+          <div className="text-xl font-bold text-sky-400">{comparisons}</div>
+          <div className="text-sm text-white/60">Comparisons</div>
         </div>
-        <div className="bg-secondary/20 rounded-lg p-3">
-          <div className="text-xl font-bold text-accent">{swaps}</div>
-          <div className="text-sm text-muted-foreground">Swaps</div>
+        <div className="bg-white/5 rounded-lg p-3 border border-white/10">
+          <div className="text-xl font-bold text-sky-400">{swaps}</div>
+          <div className="text-sm text-white/60">Swaps</div>
         </div>
       </div>
 
       {/* Current Step */}
       {currentStep && (
-        <div className="bg-accent/10 border border-accent/20 rounded-lg p-3 max-w-2xl text-center">
-          <p className="text-accent font-medium">{currentStep}</p>
+        <div className="bg-sky-500/10 border border-sky-500/20 rounded-lg p-3 max-w-2xl text-center">
+          <p className="text-sky-400 font-medium">{currentStep}</p>
         </div>
       )}
 
       {/* Array Visualization */}
       <div className="w-full max-w-6xl">
-        <div className="flex items-end justify-center space-x-1 h-80 bg-secondary/10 rounded-lg p-4">
+        <div className="flex items-end justify-center space-x-1 h-80 bg-black/20 rounded-lg p-4 border border-white/10">
           {array.map((element, index) => (
             <motion.div
               key={element.id}
@@ -673,24 +673,24 @@ export default function AlgorithmVisualizer() {
       {/* Legend */}
       <div className="flex flex-wrap gap-4 justify-center text-sm">
         <div className="flex items-center space-x-2">
-          <div className="w-4 h-4 bg-accent rounded"></div>
-          <span className="text-muted-foreground">Unsorted</span>
+          <div className="w-4 h-4 bg-purple-500 rounded"></div>
+          <span className="text-white/60">Unsorted</span>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 bg-blue-500 rounded"></div>
-          <span className="text-muted-foreground">Comparing</span>
+          <span className="text-white/60">Comparing</span>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 bg-red-500 rounded"></div>
-          <span className="text-muted-foreground">Swapping</span>
+          <span className="text-white/60">Swapping</span>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 bg-yellow-500 rounded"></div>
-          <span className="text-muted-foreground">Pivot/Current</span>
+          <span className="text-white/60">Pivot/Current</span>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
-          <span className="text-muted-foreground">Sorted</span>
+          <span className="text-white/60">Sorted</span>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { Pool } from 'pg'
-import { Certification, Project, BlogPost, AdminUser, AdminSession } from '@/types'
+import { Certification, Project, BlogPost, AdminUser, AdminSession, AboutContent, ContactFormSubmission } from '@/types'
 
 // PostgreSQL database configuration
 const pool = new Pool({
@@ -10,7 +10,7 @@ const pool = new Pool({
 // Initialize PostgreSQL database tables
 export async function initializeDatabasePostgres() {
   const client = await pool.connect()
-  
+
   try {
     // Admin users table
     await client.query(`
@@ -79,6 +79,29 @@ export async function initializeDatabasePostgres() {
         published BOOLEAN NOT NULL DEFAULT false,
         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
         updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+      )
+    `)
+
+    // About content table (single row for about page)
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS about_content (
+        id TEXT PRIMARY KEY,
+        content TEXT NOT NULL,
+        updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        updated_by TEXT
+      )
+    `)
+
+    // Contact form submissions table
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS contact_submissions (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        organisation TEXT,
+        contact_info TEXT NOT NULL,
+        message TEXT NOT NULL,
+        created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+        read BOOLEAN NOT NULL DEFAULT false
       )
     `)
 
@@ -530,6 +553,141 @@ export const blogPostsDbPostgres = {
     try {
       const result = await client.query(
         'DELETE FROM blog_posts WHERE id = $1',
+        [id]
+      )
+      return (result.rowCount ?? 0) > 0
+    } finally {
+      client.release()
+    }
+  }
+}
+
+// About Content DB operations for PostgreSQL
+export const aboutContentDbPostgres = {
+  async get(): Promise<AboutContent | null> {
+    const client = await pool.connect()
+    try {
+      const result = await client.query(
+        'SELECT * FROM about_content LIMIT 1'
+      )
+      const row = result.rows[0]
+      if (!row) return null
+
+      return {
+        id: row.id,
+        content: row.content,
+        updatedAt: row.updated_at,
+        updatedBy: row.updated_by
+      }
+    } finally {
+      client.release()
+    }
+  },
+
+  async upsert(content: string, updatedBy?: string): Promise<string> {
+    const client = await pool.connect()
+    try {
+      const existing = await client.query('SELECT id FROM about_content LIMIT 1')
+
+      if (existing.rows.length > 0) {
+        await client.query(
+          'UPDATE about_content SET content = $1, updated_at = NOW(), updated_by = $2 WHERE id = $3',
+          [content, updatedBy || null, existing.rows[0].id]
+        )
+        return existing.rows[0].id
+      } else {
+        const id = crypto.randomUUID()
+        await client.query(
+          'INSERT INTO about_content (id, content, updated_by) VALUES ($1, $2, $3)',
+          [id, content, updatedBy || null]
+        )
+        return id
+      }
+    } finally {
+      client.release()
+    }
+  }
+}
+
+// Contact Submissions DB operations for PostgreSQL
+export const contactSubmissionsDbPostgres = {
+  async getAll(): Promise<ContactFormSubmission[]> {
+    const client = await pool.connect()
+    try {
+      const result = await client.query(
+        'SELECT * FROM contact_submissions ORDER BY created_at DESC'
+      )
+      return result.rows.map((row: any) => ({
+        id: row.id,
+        name: row.name,
+        organisation: row.organisation,
+        contactInfo: row.contact_info,
+        message: row.message,
+        createdAt: row.created_at,
+        read: row.read
+      }))
+    } finally {
+      client.release()
+    }
+  },
+
+  async getById(id: string): Promise<ContactFormSubmission | null> {
+    const client = await pool.connect()
+    try {
+      const result = await client.query(
+        'SELECT * FROM contact_submissions WHERE id = $1',
+        [id]
+      )
+      const row = result.rows[0]
+      if (!row) return null
+
+      return {
+        id: row.id,
+        name: row.name,
+        organisation: row.organisation,
+        contactInfo: row.contact_info,
+        message: row.message,
+        createdAt: row.created_at,
+        read: row.read
+      }
+    } finally {
+      client.release()
+    }
+  },
+
+  async create(submission: Omit<ContactFormSubmission, 'id' | 'createdAt' | 'read'>): Promise<string> {
+    const client = await pool.connect()
+    try {
+      const id = crypto.randomUUID()
+      await client.query(
+        `INSERT INTO contact_submissions (id, name, organisation, contact_info, message)
+         VALUES ($1, $2, $3, $4, $5)`,
+        [id, submission.name, submission.organisation || null, submission.contactInfo, submission.message]
+      )
+      return id
+    } finally {
+      client.release()
+    }
+  },
+
+  async markAsRead(id: string): Promise<boolean> {
+    const client = await pool.connect()
+    try {
+      const result = await client.query(
+        'UPDATE contact_submissions SET read = true WHERE id = $1',
+        [id]
+      )
+      return (result.rowCount ?? 0) > 0
+    } finally {
+      client.release()
+    }
+  },
+
+  async delete(id: string): Promise<boolean> {
+    const client = await pool.connect()
+    try {
+      const result = await client.query(
+        'DELETE FROM contact_submissions WHERE id = $1',
         [id]
       )
       return (result.rowCount ?? 0) > 0

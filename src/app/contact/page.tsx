@@ -20,10 +20,11 @@ export default function ContactPage() {
                 </svg>
             ),
             title: 'GitHub',
-            description: 'Check out my projects and contributions',
+            description: 'Check out my projects',
             value: 'R1ssh1',
             link: 'https://github.com/R1ssh1',
-            action: 'View Profile'
+            action: 'View Profile',
+            tint: 'rgba(139, 92, 246, 0.15)'
         },
         {
             icon: (
@@ -32,10 +33,11 @@ export default function ContactPage() {
                 </svg>
             ),
             title: 'LinkedIn',
-            description: 'Connect with me professionally',
+            description: 'Connect professionally',
             value: 'Rishi Jha',
             link: 'https://www.linkedin.com/in/rishi-jha-85b52b250/',
-            action: 'Connect'
+            action: 'Connect',
+            tint: 'rgba(59, 130, 246, 0.15)'
         },
         {
             icon: (
@@ -44,15 +46,16 @@ export default function ContactPage() {
                 </svg>
             ),
             title: 'Email',
-            description: 'Send me a message directly',
+            description: 'Send me a message',
             value: 'rishijha2025@gmail.com',
             action: emailCopied ? 'Copied!' : 'Copy Email',
-            onClick: copyEmail
+            onClick: copyEmail,
+            tint: 'rgba(16, 185, 129, 0.15)'
         }
     ]
 
     return (
-        <div className="min-h-screen pt-32 px-4 bg-background">
+        <div className="min-h-screen pt-32 px-4">
             <div className="max-w-4xl mx-auto">
                 {/* Header */}
                 <motion.div
@@ -61,75 +64,98 @@ export default function ContactPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    <h1 className="text-4xl md:text-6xl font-bold text-foreground mb-6">
-                        Let&apos;s Connect
+                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+                        Let&apos;s <span className="text-sky-400">Connect</span>
                     </h1>
-                    <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
                         I&apos;m always excited to collaborate on interesting projects, discuss new technologies,
-                        or simply chat about software development. Let&apos;s build something amazing together!
+                        or simply chat about software development.
                     </p>
                 </motion.div>
 
                 {/* Contact Methods */}
-                <div className="grid md:grid-cols-3 gap-6 mb-16">
+                <div className="space-y-6 mb-16">
                     {contactMethods.map((method, index) => (
                         <motion.div
                             key={method.title}
-                            className="bg-secondary/50 rounded-xl p-6 hover:bg-secondary/70 transition-all duration-300 text-center"
-                            initial={{ opacity: 0, y: 30 }}
+                            className="glass-morphism rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300"
+                            style={{ background: `linear-gradient(135deg, ${method.tint}, transparent)` }}
+                            initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                            transition={{ duration: 0.6, delay: 0.1 + index * 0.1 }}
                             whileHover={{ scale: 1.02 }}
                         >
-                            <div className="flex justify-center mb-4 text-accent">
-                                {method.icon}
-                            </div>
-                            <h3 className="text-xl font-bold text-foreground mb-2">{method.title}</h3>
-                            <p className="text-muted-foreground mb-3">{method.description}</p>
-                            <p className="text-foreground font-medium mb-4">{method.value}</p>
+                            <div className="flex items-start gap-4">
+                                <div className="w-14 h-14 bg-white/10 rounded-xl flex items-center justify-center text-sky-400 flex-shrink-0">
+                                    {method.icon}
+                                </div>
+                                <div className="flex-1">
+                                    <h3 className="text-xl font-bold text-white mb-1">{method.title}</h3>
+                                    <p className="text-white/50 text-sm mb-2">{method.description}</p>
+                                    <p className="text-white/80 font-medium mb-4">{method.value}</p>
 
-                            {method.link ? (
-                                <a
-                                    href={method.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-block px-4 py-2 bg-accent hover:bg-accent/90 text-white rounded-lg transition-all duration-300 font-medium"
-                                >
-                                    {method.action}
-                                </a>
-                            ) : (
-                                <button
-                                    onClick={method.onClick}
-                                    className={`inline-block px-4 py-2 rounded-lg transition-all duration-300 font-medium ${emailCopied
-                                        ? 'bg-green-500 text-white'
-                                        : 'bg-accent hover:bg-accent/90 text-white'
-                                        }`}
-                                >
-                                    {method.action}
-                                </button>
-                            )}
+                                    {method.link ? (
+                                        <a
+                                            href={method.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all duration-300 font-medium"
+                                        >
+                                            {method.action}
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                            </svg>
+                                        </a>
+                                    ) : (
+                                        <button
+                                            onClick={method.onClick}
+                                            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 font-medium ${emailCopied
+                                                ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                                                : 'bg-white/10 hover:bg-white/20 text-white'
+                                                }`}
+                                        >
+                                            {emailCopied ? (
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                                </svg>
+                                            ) : (
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                                </svg>
+                                            )}
+                                            {method.action}
+                                        </button>
+                                    )}
+                                </div>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
 
-                {/* Additional Info */}
+                {/* Open to Opportunities */}
                 <motion.div
-                    className="text-center bg-accent/5 rounded-xl p-8 border border-accent/10"
+                    className="glass-morphism rounded-2xl p-8 border border-white/10"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
                 >
-                    <h3 className="text-2xl font-bold text-foreground mb-4">Open to Opportunities</h3>
-                    <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
+                    <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-3">
+                        <div className="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center">
+                            <svg className="w-5 h-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        Open to Opportunities
+                    </h3>
+                    <p className="text-white/60 mb-6 leading-relaxed">
                         Currently pursuing my Computer Science degree and actively seeking internships,
-                        collaborative projects, and learning opportunities. I&apos;m particularly interested in
-                        full-stack development, modern web technologies, and innovative problem-solving.
+                        collaborative projects, and learning opportunities.
                     </p>
-                    <div className="flex flex-wrap justify-center gap-2">
-                        {['React', 'Next.js', 'TypeScript', 'Python', 'Node.js', 'Full-Stack', 'AI/ML'].map((tech) => (
+                    <div className="flex flex-wrap gap-3">
+                        {['React', 'Next.js', 'TypeScript', 'Python', 'Full-Stack'].map((tech) => (
                             <span
                                 key={tech}
-                                className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium border border-accent/20"
+                                className="px-4 py-2 bg-white/10 text-white/80 rounded-xl text-sm font-medium border border-white/10"
                             >
                                 {tech}
                             </span>

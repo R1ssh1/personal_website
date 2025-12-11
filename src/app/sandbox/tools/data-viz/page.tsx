@@ -3,18 +3,20 @@ import DataVisualizationTool from '@/components/playground/DataVisualizationTool
 
 export default function DataVisualizationPage() {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
-          <Link
-            href="/sandbox"
-            className="inline-flex items-center text-accent hover:text-accent/80 transition-colors"
-          >
-            ← Back to Sandbox
-          </Link>
-        </div>
+    <div className="min-h-screen pt-32 px-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Back Link */}
+        <Link
+          href="/sandbox"
+          className="inline-flex items-center space-x-2 text-white/60 hover:text-sky-400 transition-colors mb-8"
+        >
+          <span>←</span>
+          <span>Back to Sandbox</span>
+        </Link>
 
-        <DataVisualizationTool />
+        <div className="glass-morphism rounded-2xl p-6 border border-white/10">
+          <DataVisualizationTool />
+        </div>
       </div>
     </div>
   )

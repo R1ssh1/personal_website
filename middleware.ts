@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { adminSessionsDb, adminUsersDb } from '@/lib/database'
+import { adminSessionsDb, adminUsersDb } from '@/lib/database-unified'
 
 export function middleware(request: NextRequest) {
   // Only apply middleware to admin dashboard routes

@@ -1,13 +1,15 @@
 // Unified database interface that works with both SQLite (development) and PostgreSQL (production)
-import { Certification, Project, BlogPost, AdminUser, AdminSession } from '@/types'
+import { Certification, Project, BlogPost, AdminUser, AdminSession, AboutContent, ContactFormSubmission } from '@/types'
 
 // Import the existing SQLite database
-import { 
+import {
   adminUsersDb as sqliteAdminUsersDb,
   adminSessionsDb as sqliteAdminSessionsDb,
   certificationsDb as sqliteCertificationsDb,
   projectsDb as sqliteProjectsDb,
   blogPostsDb as sqliteBlogPostsDb,
+  aboutContentDb as sqliteAboutContentDb,
+  contactSubmissionsDb as sqliteContactSubmissionsDb,
   initializeDatabase as initializeSQLite
 } from './database'
 
@@ -18,6 +20,8 @@ import {
   certificationsDbPostgres,
   projectsDbPostgres,
   blogPostsDbPostgres,
+  aboutContentDbPostgres,
+  contactSubmissionsDbPostgres,
   initializeDatabasePostgres
 } from './database-postgres'
 
@@ -107,6 +111,33 @@ const sqliteBlogPostsDbAsync = {
   }
 }
 
+const sqliteAboutContentDbAsync = {
+  async get(): Promise<AboutContent | null> {
+    return sqliteAboutContentDb.get()
+  },
+  async upsert(content: string, updatedBy?: string): Promise<string> {
+    return sqliteAboutContentDb.upsert(content, updatedBy)
+  }
+}
+
+const sqliteContactSubmissionsDbAsync = {
+  async getAll(): Promise<ContactFormSubmission[]> {
+    return sqliteContactSubmissionsDb.getAll()
+  },
+  async getById(id: string): Promise<ContactFormSubmission | null> {
+    return sqliteContactSubmissionsDb.getById(id)
+  },
+  async create(submission: Omit<ContactFormSubmission, 'id' | 'createdAt' | 'read'>): Promise<string> {
+    return sqliteContactSubmissionsDb.create(submission)
+  },
+  async markAsRead(id: string): Promise<boolean> {
+    return sqliteContactSubmissionsDb.markAsRead(id)
+  },
+  async delete(id: string): Promise<boolean> {
+    return sqliteContactSubmissionsDb.delete(id)
+  }
+}
+
 // Export the appropriate database functions
 export const initializeDatabase = usePostgres ? initializeDatabasePostgres : async () => initializeSQLite()
 
@@ -115,6 +146,8 @@ export const adminSessionsDb = usePostgres ? adminSessionsDbPostgres : sqliteAdm
 export const certificationsDb = usePostgres ? certificationsDbPostgres : sqliteCertificationsDbAsync
 export const projectsDb = usePostgres ? projectsDbPostgres : sqliteProjectsDbAsync
 export const blogPostsDb = usePostgres ? blogPostsDbPostgres : sqliteBlogPostsDbAsync
+export const aboutContentDb = usePostgres ? aboutContentDbPostgres : sqliteAboutContentDbAsync
+export const contactSubmissionsDb = usePostgres ? contactSubmissionsDbPostgres : sqliteContactSubmissionsDbAsync
 
 // Initialize the database on import
 if (usePostgres) {

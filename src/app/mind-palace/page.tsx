@@ -6,10 +6,19 @@ import { useState, useEffect } from 'react'
 import { BlogPost } from '@/types'
 import { createSlug } from '@/lib/slug'
 
+// Tint colors for blog cards
+const tintColors = [
+    'rgba(139, 92, 246, 0.15)',  // Purple
+    'rgba(59, 130, 246, 0.15)',  // Blue
+    'rgba(16, 185, 129, 0.15)',  // Green
+    'rgba(245, 158, 11, 0.15)',  // Amber
+    'rgba(236, 72, 153, 0.15)',  // Pink
+    'rgba(6, 182, 212, 0.15)',   // Cyan
+]
+
 export default function MindPalace() {
     const [blogPosts, setBlogPosts] = useState<BlogPost[]>([])
     const [selectedCategory, setSelectedCategory] = useState("All")
-    const [searchTerm, setSearchTerm] = useState("")
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
 
@@ -40,10 +49,7 @@ export default function MindPalace() {
 
     const filteredPosts = blogPosts.filter(post => {
         const matchesCategory = selectedCategory === "All" || (post.tags && post.tags.includes(selectedCategory))
-        const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            (post.excerpt && post.excerpt.toLowerCase().includes(searchTerm.toLowerCase())) ||
-            (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
-        return matchesCategory && matchesSearch && post.published
+        return matchesCategory && post.published
     })
 
     return (
@@ -52,84 +58,73 @@ export default function MindPalace() {
                 {/* Loading State */}
                 {isLoading && (
                     <div className="flex justify-center items-center min-h-[400px]">
-                        <div className="text-xl text-muted">Loading blog posts...</div>
+                        <div className="inline-block w-10 h-10 border-4 border-sky-400/30 border-t-sky-400 rounded-full animate-spin"></div>
                     </div>
                 )}
 
                 {/* Error State */}
                 {error && (
                     <div className="flex justify-center items-center min-h-[400px]">
-                        <div className="text-xl text-red-500">{error}</div>
+                        <div className="glass-morphism rounded-2xl p-8 border border-red-500/20">
+                            <p className="text-red-400">{error}</p>
+                        </div>
                     </div>
                 )}
 
                 {/* Content - only show when not loading and no error */}
                 {!isLoading && !error && (
                     <>
-                        {/* Header */}
+                        {/* Header with Hero Image */}
                         <motion.div
-                            className="text-center mb-16"
+                            className="mb-16"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
                         >
-                            <motion.h1
-                                className="text-4xl md:text-6xl font-bold text-text mb-6"
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.8, delay: 0.2 }}
-                            >
-                                <span className="text-accent">Mind</span> Palace
-                            </motion.h1>
+                            {/* Hero Section with Illustration */}
+                            <div className="relative glass-morphism rounded-3xl overflow-hidden border border-white/10 mb-12">
+                                <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12 items-center">
+                                    {/* Text Content */}
+                                    <div className="text-center md:text-left">
+                                        <motion.h1
+                                            className="text-4xl md:text-6xl font-bold text-white mb-6"
+                                            initial={{ opacity: 0, x: -20 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ duration: 0.8, delay: 0.2 }}
+                                        >
+                                            <span className="text-sky-400">Mind</span> Palace
+                                        </motion.h1>
 
-                            <motion.p
-                                className="text-xl text-muted max-w-2xl mx-auto mb-8"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 0.4 }}
-                            >
-                                A collection of thoughts, technical insights, and musings from my journey
-                                in software development and computer science.
-                            </motion.p>
-
-                            {/* Fun brain icon */}
-                            <motion.div
-                                className="flex justify-center mb-8"
-                                initial={{ opacity: 0, rotate: -180 }}
-                                animate={{ opacity: 1, rotate: 0 }}
-                                transition={{ duration: 1, delay: 0.6, type: "spring" }}
-                            >
-                                <div className="text-6xl">🧠</div>
-                            </motion.div>
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ duration: 0.6, delay: 0.6 }}
+                                            className="flex flex-wrap gap-3 justify-center md:justify-start"
+                                        >
+                                            <span className="px-4 py-2 bg-white/10 rounded-full text-white/70 text-sm">Technical Writing</span>
+                                            <span className="px-4 py-2 bg-white/10 rounded-full text-white/70 text-sm">Tutorials</span>
+                                            <span className="px-4 py-2 bg-white/10 rounded-full text-white/70 text-sm">Insights</span>
+                                        </motion.div>
+                                    </div>
+                                </div>
+                            </div>
                         </motion.div>
 
-                        {/* Search and Filter */}
+                        {/* Category Filter */}
                         <motion.div
                             className="mb-12"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.8 }}
+                            transition={{ duration: 0.6, delay: 0.6 }}
                         >
-                            {/* Search Bar */}
-                            <div className="mb-6">
-                                <input
-                                    type="text"
-                                    placeholder="Search thoughts..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full max-w-md mx-auto block px-6 py-3 glass-morphism border border-secondary/20 rounded-xl focus:border-accent/50 focus:outline-none transition-all duration-300 text-text placeholder-muted"
-                                />
-                            </div>
-
-                            {/* Category Filter */}
                             <div className="flex flex-wrap justify-center gap-3">
                                 {categories.map((category) => (
                                     <motion.button
                                         key={category}
                                         onClick={() => setSelectedCategory(category)}
                                         className={`px-6 py-2 rounded-full transition-all duration-300 font-medium ${selectedCategory === category
-                                            ? 'bg-accent text-white shadow-lg'
-                                            : 'glass-morphism text-muted hover:text-accent border border-secondary/20 hover:border-accent/30'
+                                            ? 'bg-sky-500/30 text-sky-400 border border-sky-500/30'
+                                            : 'glass-morphism text-white/60 hover:text-sky-400 border border-white/10 hover:border-sky-500/30'
                                             }`}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
@@ -151,73 +146,72 @@ export default function MindPalace() {
                                     opacity: 1,
                                     transition: {
                                         staggerChildren: 0.1,
-                                        delayChildren: 1
+                                        delayChildren: 0.8
                                     }
                                 }
                             }}
                         >
-                            {filteredPosts.map((post) => (
+                            {filteredPosts.map((post, index) => (
                                 <Link key={post.id} href={`/blog/${createSlug(post.title)}`}>
                                     <motion.article
-                                        className="glass-morphism border border-secondary/20 rounded-2xl p-6 hover:border-accent/30 transition-all duration-300 group cursor-pointer"
+                                        className="h-full glass-morphism border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 group cursor-pointer"
+                                        style={{ background: `linear-gradient(135deg, ${tintColors[index % tintColors.length]}, transparent)` }}
                                         variants={{
                                             hidden: { opacity: 0, y: 20 },
                                             visible: { opacity: 1, y: 0 }
                                         }}
                                         whileHover={{
                                             scale: 1.02,
-                                            y: -4,
-                                            boxShadow: "0 20px 40px rgba(0,0,0,0.1)"
+                                            y: -4
                                         }}
                                         whileTap={{ scale: 0.98 }}
                                     >
                                         {/* Category Badge */}
                                         <div className="flex items-center justify-between mb-4">
-                                            <span className="px-3 py-1 bg-accent/10 text-accent rounded-full text-sm font-medium">
+                                            <span className="px-3 py-1 bg-sky-500/20 text-sky-400 rounded-full text-sm font-medium border border-sky-500/30">
                                                 {post.tags && post.tags.length > 0 ? post.tags[0] : 'Blog'}
                                             </span>
-                                            <span className="text-sm text-muted">
+                                            <span className="text-sm text-white/50">
                                                 {new Date(post.publishDate || post.createdAt).toLocaleDateString()}
                                             </span>
                                         </div>
 
                                         {/* Title */}
-                                        <h2 className="text-xl font-bold text-text mb-3 group-hover:text-accent transition-colors duration-300">
+                                        <h2 className="text-xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors duration-300">
                                             {post.title}
                                         </h2>
 
                                         {/* Excerpt */}
-                                        <p className="text-muted mb-4 leading-relaxed">
+                                        <p className="text-white/60 mb-4 leading-relaxed line-clamp-3">
                                             {post.excerpt}
                                         </p>
 
                                         {/* Tags */}
                                         <div className="flex flex-wrap gap-2 mb-4">
-                                            {post.tags.map((tag) => (
+                                            {post.tags.slice(0, 3).map((tag) => (
                                                 <span
                                                     key={tag}
-                                                    className="px-2 py-1 bg-secondary/10 text-muted text-xs rounded-lg"
+                                                    className="px-2 py-1 bg-white/10 text-white/60 text-xs rounded-lg border border-white/10"
                                                 >
                                                     #{tag}
                                                 </span>
                                             ))}
+                                            {post.tags.length > 3 && (
+                                                <span className="px-2 py-1 text-white/40 text-xs">
+                                                    +{post.tags.length - 3} more
+                                                </span>
+                                            )}
                                         </div>
 
-                                        {/* Date and Read More */}
-                                        <div className="flex items-center justify-between text-sm">
-                                            <span className="text-muted">
-                                                {new Date(post.publishDate || post.createdAt).toLocaleDateString()}
-                                            </span>
+                                        {/* Read More */}
+                                        <div className="flex items-center justify-end text-sm">
                                             <motion.span
-                                                className="text-accent flex items-center gap-1 group-hover:gap-2 transition-all duration-300"
+                                                className="text-sky-400 flex items-center gap-1 group-hover:gap-2 transition-all duration-300"
                                             >
                                                 Read More
-                                                <motion.span
-                                                    animate={{ x: [0, 4, 0] }}
-                                                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                                >
-                                                    →
-                                                </motion.span>
+                                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                                                </svg>
                                             </motion.span>
                                         </div>
                                     </motion.article>
@@ -233,34 +227,19 @@ export default function MindPalace() {
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.6 }}
                             >
-                                <div className="text-6xl mb-4">🤔</div>
-                                <h3 className="text-xl font-bold text-text mb-2">No thoughts found</h3>
-                                <p className="text-muted">Try adjusting your search or filter criteria</p>
+                                <div className="glass-morphism rounded-2xl p-12 max-w-md mx-auto border border-white/10">
+                                    <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
+                                        <svg className="w-8 h-8 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className="text-xl font-bold text-white mb-2">No thoughts found</h3>
+                                    <p className="text-white/60">Try selecting a different category</p>
+                                </div>
                             </motion.div>
                         )}
 
-                        {/* Coming Soon Note */}
-                        <motion.div
-                            className="text-center py-12 border-t border-secondary/20"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 1.2 }}
-                        >
-                            <div className="glass-morphism border border-secondary/20 rounded-2xl p-8 max-w-2xl mx-auto">
-                                <div className="text-4xl mb-4">🚀</div>
-                                <h3 className="text-xl font-bold text-text mb-3">More Thoughts Coming Soon</h3>
-                                <p className="text-muted mb-6">
-                                    I&apos;m constantly learning and exploring new ideas. Check back regularly for fresh insights
-                                    on software development, design, and technology.
-                                </p>
-                                <Link
-                                    href="/contact"
-                                    className="inline-block px-6 py-3 bg-accent hover:bg-accent/90 text-white rounded-xl transition-all duration-300 font-medium"
-                                >
-                                    Suggest a Topic
-                                </Link>
-                            </div>
-                        </motion.div>
+
                     </>
                 )}
             </div>

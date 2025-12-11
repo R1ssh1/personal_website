@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { projectsDb } from '@/lib/database';
+import { projectsDb } from '@/lib/database-unified';
 import { getSession } from '@/lib/auth';
 import { z } from 'zod';
 

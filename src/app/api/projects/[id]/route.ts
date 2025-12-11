@@ -10,9 +10,9 @@ const updateProjectSchema = z.object({
   title: z.string().min(1, 'Title is required').max(200, 'Title too long').optional(),
   description: z.string().min(1, 'Description is required').optional(),
   techStack: z.array(z.string()).min(1, 'At least one technology is required').optional(),
-  githubLink: z.string().url().optional().or(z.literal('')),
-  liveDemoLink: z.string().url().optional().or(z.literal('')),
-  images: z.array(z.string().url()).optional(),
+  githubLink: z.union([z.string().url(), z.literal('')]).optional(),
+  liveDemoLink: z.union([z.string().url(), z.literal('')]).optional(),
+  images: z.array(z.string()).optional().default([]),
 });
 
 interface RouteParams {
@@ -76,32 +76,36 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
     }
 
     // Then, try to find in database by matching slug to title
-    const allDbProjects = await projectsDb.getAll() as unknown as ProjectRow[];
+    const allDbProjects = await projectsDb.getAll();
     const dbProject = allDbProjects.find(project =>
       getProjectSlugFromTitle(project.title) === id
     );
 
     if (dbProject) {
-      // Handle technologies as JSON string
-      const technologies = dbProject.technologies ?
-        (typeof dbProject.technologies === 'string' ? JSON.parse(dbProject.technologies) : dbProject.technologies) : [];
+      // Debug: Log the raw database project
+      console.log('Raw DB Project:', JSON.stringify(dbProject, null, 2));
+
+      const projectData = {
+        id: dbProject.id,
+        title: dbProject.title,
+        summary: dbProject.description || '',
+        description: dbProject.description,
+        content: dbProject.description,
+        technologies: dbProject.techStack || [],
+        date: '',
+        featured: false,
+        githubUrl: dbProject.githubLink || '',
+        demoUrl: dbProject.liveDemoLink || '',
+        imageUrl: dbProject.images?.[0] || '',
+        images: dbProject.images || [],
+        type: 'database' as const
+      };
+
+      console.log('Processed Project Data:', JSON.stringify(projectData, null, 2));
 
       return NextResponse.json({
         success: true,
-        project: {
-          id: dbProject.id,
-          title: dbProject.title,
-          summary: dbProject.summary || '',
-          description: dbProject.description,
-          content: dbProject.description, // For compatibility
-          technologies: technologies,
-          date: dbProject.date || '',
-          featured: Boolean(dbProject.featured),
-          githubUrl: dbProject.github || '',
-          demoUrl: dbProject.demo || '',
-          imageUrl: dbProject.image_url || '',
-          type: 'database'
-        }
+        project: projectData
       });
     }
 
@@ -146,7 +150,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     // Check if project exists
-    const existingProject = projectsDb.getById(id);
+    const existingProject = await projectsDb.getById(id);
     if (!existingProject) {
       return NextResponse.json(
         { error: 'Project not found', success: false },
@@ -155,7 +159,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     const updateData = validationResult.data;
-    const success = projectsDb.update(id, updateData);
+    const success = await projectsDb.update(id, updateData);
 
     if (!success) {
       return NextResponse.json(
@@ -164,7 +168,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const updatedProject = projectsDb.getById(id);
+    const updatedProject = await projectsDb.getById(id);
     return NextResponse.json({ success: true, project: updatedProject });
   } catch (error) {
     console.error('Update project error:', error);
@@ -190,7 +194,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     const { id } = await params;
 
     // Check if project exists
-    const existingProject = projectsDb.getById(id);
+    const existingProject = await projectsDb.getById(id);
     if (!existingProject) {
       return NextResponse.json(
         { error: 'Project not found', success: false },
@@ -198,7 +202,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const success = projectsDb.delete(id);
+    const success = await projectsDb.delete(id);
 
     if (!success) {
       return NextResponse.json(

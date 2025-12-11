@@ -13,6 +13,19 @@ export default function Home() {
       {/* Quick Links Section */}
       <section className="relative z-20 py-16 px-4 max-w-6xl mx-auto -mt-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8">
+          <Link href="/about" className="group">
+            <GlareHover intensity="medium" className="glass-morphism p-6 rounded-xl group-hover:bg-accent/10 transition-all duration-300">
+              <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/30 transition-colors">
+                <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-text group-hover:text-accent transition-colors">About</h3>
+              <p className="text-muted text-sm leading-relaxed">
+                Learn more about my background and interests
+              </p>
+            </GlareHover>
+          </Link>
           <Link href="/projects" className="group">
             <GlareHover intensity="medium" className="glass-morphism p-6 rounded-xl group-hover:bg-accent/10 transition-all duration-300">
               <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/30 transition-colors">
@@ -27,33 +40,9 @@ export default function Home() {
             </GlareHover>
           </Link>
 
-          <Link href="/sandbox" className="group">
-            <GlareHover intensity="medium" className="glass-morphism p-6 rounded-xl group-hover:bg-accent/10 transition-all duration-300">
-              <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/30 transition-colors">
-                <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-text group-hover:text-accent transition-colors">The Sandbox</h3>
-              <p className="text-muted text-sm leading-relaxed">
-                Interactive experiments, games, and creative tools
-              </p>
-            </GlareHover>
-          </Link>
 
-          <Link href="/about" className="group">
-            <GlareHover intensity="medium" className="glass-morphism p-6 rounded-xl group-hover:bg-accent/10 transition-all duration-300">
-              <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/30 transition-colors">
-                <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-semibold mb-3 text-text group-hover:text-accent transition-colors">About</h3>
-              <p className="text-muted text-sm leading-relaxed">
-                Learn more about my background and interests
-              </p>
-            </GlareHover>
-          </Link>
+
+
 
           <Link href="/certifications" className="group">
             <GlareHover intensity="medium" className="glass-morphism p-6 rounded-xl group-hover:bg-accent/10 transition-all duration-300">
@@ -69,6 +58,7 @@ export default function Home() {
             </GlareHover>
           </Link>
 
+
           <Link href="/mind-palace" className="group">
             <GlareHover intensity="medium" className="glass-morphism p-6 rounded-xl group-hover:bg-accent/10 transition-all duration-300">
               <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/30 transition-colors">
@@ -79,6 +69,19 @@ export default function Home() {
               <h3 className="text-xl font-semibold mb-3 text-text group-hover:text-accent transition-colors">Mind Palace</h3>
               <p className="text-muted text-sm leading-relaxed">
                 My thoughts, ideas, and creative musings
+              </p>
+            </GlareHover>
+          </Link>
+          <Link href="/sandbox" className="group">
+            <GlareHover intensity="medium" className="glass-morphism p-6 rounded-xl group-hover:bg-accent/10 transition-all duration-300">
+              <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center mb-4 group-hover:bg-accent/30 transition-colors">
+                <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-text group-hover:text-accent transition-colors">The Sandbox</h3>
+              <p className="text-muted text-sm leading-relaxed">
+                Interactive experiments, games, and creative tools
               </p>
             </GlareHover>
           </Link>
