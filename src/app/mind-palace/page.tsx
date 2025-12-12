@@ -53,8 +53,8 @@ export default function MindPalace() {
     })
 
     return (
-        <div className="min-h-screen pt-24 px-4">
-            <div className="max-w-6xl mx-auto">
+        <div className="min-h-screen pt-32 px-4">
+            <div className="w-[85%] mx-auto">
                 {/* Loading State */}
                 {isLoading && (
                     <div className="flex justify-center items-center min-h-[400px]">
@@ -74,40 +74,19 @@ export default function MindPalace() {
                 {/* Content - only show when not loading and no error */}
                 {!isLoading && !error && (
                     <>
-                        {/* Header with Hero Image */}
+                        {/* Header */}
                         <motion.div
-                            className="mb-16"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6 }}
+                            className="text-center mb-16"
                         >
-                            {/* Hero Section with Illustration */}
-                            <div className="relative glass-morphism rounded-3xl overflow-hidden border border-white/10 mb-12">
-                                <div className="grid md:grid-cols-2 gap-8 p-8 md:p-12 items-center">
-                                    {/* Text Content */}
-                                    <div className="text-center md:text-left">
-                                        <motion.h1
-                                            className="text-4xl md:text-6xl font-bold text-white mb-6"
-                                            initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.8, delay: 0.2 }}
-                                        >
-                                            <span className="text-sky-400">Mind</span> Palace
-                                        </motion.h1>
-
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ duration: 0.6, delay: 0.6 }}
-                                            className="flex flex-wrap gap-3 justify-center md:justify-start"
-                                        >
-                                            <span className="px-4 py-2 bg-white/10 rounded-full text-white/70 text-sm">Technical Writing</span>
-                                            <span className="px-4 py-2 bg-white/10 rounded-full text-white/70 text-sm">Tutorials</span>
-                                            <span className="px-4 py-2 bg-white/10 rounded-full text-white/70 text-sm">Insights</span>
-                                        </motion.div>
-                                    </div>
-                                </div>
-                            </div>
+                            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                                <span className="text-sky-400">Mind</span> Palace
+                            </h1>
+                            <p className="text-lg md:text-xl text-white/60 max-w-3xl mx-auto leading-relaxed">
+                                A collection of my thoughts, technical writings, and insights on software development and technology.
+                            </p>
                         </motion.div>
 
                         {/* Category Filter */}

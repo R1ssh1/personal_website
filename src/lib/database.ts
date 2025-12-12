@@ -111,6 +111,18 @@ export function initializeDatabase() {
     )
   `)
 
+  // High scores table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS high_scores (
+      id TEXT PRIMARY KEY,
+      game_name TEXT NOT NULL,
+      username TEXT NOT NULL,
+      score INTEGER NOT NULL,
+      created_at TEXT NOT NULL,
+      UNIQUE(game_name)
+    )
+  `)
+
   // Add migration for existing tables that might not have all columns
   migrateTables()
 }
@@ -711,6 +723,51 @@ export const contactSubmissionsDb = {
     const stmt = db.prepare('DELETE FROM contact_submissions WHERE id = ?')
     const result = stmt.run(id)
     return result.changes > 0
+  }
+}
+
+// Database operations for high scores
+export const highScoresDb = {
+  getByGame: (gameName: string): { id: string; gameName: string; username: string; score: number; createdAt: string } | null => {
+    const stmt = db.prepare('SELECT * FROM high_scores WHERE game_name = ?')
+    const row = stmt.get(gameName) as any
+    if (!row) return null
+
+    return {
+      id: row.id,
+      gameName: row.game_name,
+      username: row.username,
+      score: row.score,
+      createdAt: row.created_at
+    }
+  },
+
+  createOrUpdate: (gameName: string, username: string, score: number): string => {
+    const existing = highScoresDb.getByGame(gameName)
+    const now = new Date().toISOString()
+
+    if (existing) {
+      // Only update if new score is higher
+      if (score > existing.score) {
+        const stmt = db.prepare(`
+          UPDATE high_scores 
+          SET username = ?, score = ?, created_at = ?
+          WHERE game_name = ?
+        `)
+        stmt.run(username, score, now, gameName)
+        return existing.id
+      }
+      return existing.id
+    } else {
+      // Create new high score
+      const id = crypto.randomUUID()
+      const stmt = db.prepare(`
+        INSERT INTO high_scores (id, game_name, username, score, created_at)
+        VALUES (?, ?, ?, ?, ?)
+      `)
+      stmt.run(id, gameName, username, score, now)
+      return id
+    }
   }
 }
 

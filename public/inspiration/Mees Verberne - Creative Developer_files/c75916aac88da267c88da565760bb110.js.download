@@ -1,5 +1,0 @@
-var speedLoadOffset=1000;var speedIndicator=20;$(document).ready(function(){if($(window).width()<$(window).height()){speedIndicator=30}
-$(document).on("initPage",function(){changeSpeedElements()})});function changeSpeedElements(){$("[data-scroll-speed]").each(function(i,el){ScrollTrigger.create({trigger:$(el),start:"0% 100%",end:"100% 0%",onUpdate(e){if(e.isActive==!0){if($(el).data("scroll-position")=="top"){if(($(window).scrollTop()/speedIndicator)*$(el).data("scroll-speed")<0){var position=Math.abs(($(window).scrollTop()/(speedIndicator*2))*$(el).data("scroll-speed"))}else{var position=-Math.abs(($(window).scrollTop()/(speedIndicator*2))*$(el).data("scroll-speed"))}
-if($(el).data("scroll-direction")=="horizontal"){gsap.to(el,0,{x:position,force3D:!0})}else{gsap.to(el,0,{y:position,force3D:!0})}}else{var position=(($(el).offset().top-$(window).scrollTop()-(($(window).height()/2)-($(el).height()/2)))/speedIndicator)*$(el).data("scroll-speed")
-if($(el).data("scroll-direction")=="horizontal"){gsap.to(el,0,{x:position,force3D:!0})}else{gsap.to(el,0,{y:position,force3D:!0})}}}}})})}
-;

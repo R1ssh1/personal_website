@@ -10,6 +10,7 @@ import {
   blogPostsDb as sqliteBlogPostsDb,
   aboutContentDb as sqliteAboutContentDb,
   contactSubmissionsDb as sqliteContactSubmissionsDb,
+  highScoresDb as sqliteHighScoresDb,
   initializeDatabase as initializeSQLite
 } from './database'
 
@@ -138,6 +139,15 @@ const sqliteContactSubmissionsDbAsync = {
   }
 }
 
+const sqliteHighScoresDbAsync = {
+  async getByGame(gameName: string): Promise<{ id: string; gameName: string; username: string; score: number; createdAt: string } | null> {
+    return sqliteHighScoresDb.getByGame(gameName)
+  },
+  async createOrUpdate(gameName: string, username: string, score: number): Promise<string> {
+    return sqliteHighScoresDb.createOrUpdate(gameName, username, score)
+  }
+}
+
 // Export the appropriate database functions
 export const initializeDatabase = usePostgres ? initializeDatabasePostgres : async () => initializeSQLite()
 
@@ -148,6 +158,7 @@ export const projectsDb = usePostgres ? projectsDbPostgres : sqliteProjectsDbAsy
 export const blogPostsDb = usePostgres ? blogPostsDbPostgres : sqliteBlogPostsDbAsync
 export const aboutContentDb = usePostgres ? aboutContentDbPostgres : sqliteAboutContentDbAsync
 export const contactSubmissionsDb = usePostgres ? contactSubmissionsDbPostgres : sqliteContactSubmissionsDbAsync
+export const highScoresDb = sqliteHighScoresDbAsync // For now, only SQLite support
 
 // Initialize the database on import
 if (usePostgres) {

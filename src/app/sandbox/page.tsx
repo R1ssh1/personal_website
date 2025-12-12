@@ -66,7 +66,7 @@ export default function SandboxPage() {
                     transition={{ duration: 0.6 }}
                 >
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
-                        The <span className="text-sky-400">Sandbox</span>
+                        <span className="text-sky-400">The</span> Sandbox
                     </h1>
                     <p className="text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
                         Where ideas come to play. Interactive games, creative tools, and professional showcases
@@ -104,7 +104,6 @@ export default function SandboxPage() {
                                             : 'hover:border-white/20'
                                             }`}
                                         whileHover={{ scale: 1.02 }}
-                                        transition={{ duration: 0.15 }}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.4, delay: (index * 0.1) + (itemIndex * 0.05) }}

@@ -1,2 +1,0 @@
-$(document).ready(function(){$(document).on("initPage",function(){if($(".projectHeaderBlock").length>0){$(".projectHeaderBlock").addClass("active");setTimeout(function(){gsap.to(".projectHeaderBlock .hugeTitle .row:first-child .line",.6,{y:0,ease:"power2.out"});gsap.to(".projectHeaderBlock .hugeTitle .row:last-child .line",.6,{y:0,ease:"power2.out",delay:.05})},100)}})})
-;

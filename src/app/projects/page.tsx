@@ -79,10 +79,10 @@ export default function ProjectsPage() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-16"
                 >
-                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                        My Projects
+                    <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+                        <span className="text-sky-400">My</span> Projects
                     </h1>
-                    <p className="text-xl text-white/60 max-w-2xl mx-auto">
+                    <p className="text-lg md:text-xl text-white/60 max-w-3xl mx-auto leading-relaxed">
                         A collection of projects I&apos;ve worked on, showcasing my skills in various technologies
                         and my passion for creating innovative solutions.
                     </p>

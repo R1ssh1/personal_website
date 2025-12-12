@@ -1,10 +1,17 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 type Grid = (number | null)[][]
 type Direction = 'up' | 'down' | 'left' | 'right'
+type GameStatus = 'playing' | 'won' | 'lost' | 'namePrompt'
+
+interface HighScore {
+  score: number
+  username: string
+  exists: boolean
+}
 
 const GRID_SIZE = 4
 
@@ -215,29 +222,46 @@ const hasValidMove = (grid: Grid): boolean => {
 export default function Game2048() {
   const [grid, setGrid] = useState<Grid>(getEmptyGrid())
   const [score, setScore] = useState(0)
-  const [bestScore, setBestScore] = useState(0)
-  const [gameStatus, setGameStatus] = useState<'playing' | 'won' | 'lost'>('playing')
+  const [highScore, setHighScore] = useState<HighScore>({ score: 0, username: 'Set a high score!', exists: false })
+  const [gameStatus, setGameStatus] = useState<GameStatus>('playing')
   const [hasWon, setHasWon] = useState(false)
   const [isInitialized, setIsInitialized] = useState(false)
+  const [playerName, setPlayerName] = useState('')
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null)
+  const gameContainerRef = useRef<HTMLDivElement>(null)
+
+  // Fetch high score from database
+  useEffect(() => {
+    const fetchHighScore = async () => {
+      try {
+        const response = await fetch('/api/high-scores/2048')
+        const data = await response.json()
+        setHighScore(data)
+      } catch (error) {
+        console.error('Error fetching high score:', error)
+      }
+    }
+    fetchHighScore()
+  }, [])
 
   const getTileColor = (value: number | null) => {
-    if (value === null) return 'bg-secondary/20'
+    if (value === null) return 'bg-gray-800'
 
     const colors: { [key: number]: string } = {
-      2: 'bg-gradient-to-br from-blue-100 to-blue-200 text-blue-800',
-      4: 'bg-gradient-to-br from-green-100 to-green-200 text-green-800',
-      8: 'bg-gradient-to-br from-yellow-100 to-yellow-200 text-yellow-800',
-      16: 'bg-gradient-to-br from-orange-100 to-orange-200 text-orange-800',
-      32: 'bg-gradient-to-br from-red-100 to-red-200 text-red-800',
-      64: 'bg-gradient-to-br from-purple-100 to-purple-200 text-purple-800',
-      128: 'bg-gradient-to-br from-indigo-100 to-indigo-200 text-indigo-800',
-      256: 'bg-gradient-to-br from-pink-100 to-pink-200 text-pink-800',
-      512: 'bg-gradient-to-br from-red-200 to-red-300 text-red-900',
-      1024: 'bg-gradient-to-br from-yellow-200 to-yellow-300 text-yellow-900',
-      2048: 'bg-gradient-to-br from-yellow-300 to-yellow-400 text-yellow-900'
+      2: 'bg-blue-500 text-white',
+      4: 'bg-blue-600 text-white',
+      8: 'bg-orange-500 text-white',
+      16: 'bg-orange-600 text-white',
+      32: 'bg-red-500 text-white',
+      64: 'bg-red-600 text-white',
+      128: 'bg-yellow-500 text-white',
+      256: 'bg-yellow-600 text-white',
+      512: 'bg-yellow-700 text-white',
+      1024: 'bg-green-500 text-white',
+      2048: 'bg-green-600 text-white'
     }
 
-    return colors[value] || 'bg-gradient-to-br from-gray-100 to-gray-200 text-gray-800'
+    return colors[value] || 'bg-purple-600 text-white'
   }
 
   const makeMove = useCallback((direction: Direction) => {
@@ -264,7 +288,6 @@ export default function Game2048() {
       setGrid(newGrid)
       const newScore = score + result.score
       setScore(newScore)
-      setBestScore(prev => Math.max(prev, newScore))
 
       // Check for win condition
       if (!hasWon && newGrid.some(row => row.some(cell => cell === 2048))) {
@@ -274,9 +297,14 @@ export default function Game2048() {
       // Check for game over
       else if (!hasValidMove(newGrid)) {
         setGameStatus('lost')
+        
+        // Check if high score was beaten
+        if (newScore > highScore.score) {
+          setGameStatus('namePrompt')
+        }
       }
     }
-  }, [grid, score, gameStatus, hasWon])
+  }, [grid, score, gameStatus, hasWon, highScore.score])
 
   const resetGame = () => {
     setGrid(initializeGame())
@@ -284,10 +312,30 @@ export default function Game2048() {
     setGameStatus('playing')
     setHasWon(false)
     setIsInitialized(true)
+    setPlayerName('')
   }
 
   const continueGame = () => {
     setGameStatus('playing')
+  }
+
+  const handleSaveHighScore = async () => {
+    if (!playerName.trim()) return
+
+    try {
+      const response = await fetch('/api/high-scores/2048', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: playerName.trim(), score })
+      })
+
+      if (response.ok) {
+        setHighScore({ score, username: playerName.trim(), exists: true })
+        setGameStatus('lost')
+      }
+    } catch (error) {
+      console.error('Error saving high score:', error)
+    }
   }
 
   // Initialize game only on client side to avoid hydration mismatch
@@ -297,6 +345,33 @@ export default function Game2048() {
       setIsInitialized(true)
     }
   }, [isInitialized])
+
+  // Touch controls
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const touch = e.touches[0]
+    setTouchStart({ x: touch.clientX, y: touch.clientY })
+  }
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStart) return
+
+    const touch = e.changedTouches[0]
+    const deltaX = touch.clientX - touchStart.x
+    const deltaY = touch.clientY - touchStart.y
+    const minSwipeDistance = 30
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (Math.abs(deltaX) > minSwipeDistance) {
+        makeMove(deltaX > 0 ? 'right' : 'left')
+      }
+    } else {
+      if (Math.abs(deltaY) > minSwipeDistance) {
+        makeMove(deltaY > 0 ? 'down' : 'up')
+      }
+    }
+
+    setTouchStart(null)
+  }
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -324,50 +399,48 @@ export default function Game2048() {
     return () => window.removeEventListener('keydown', handleKeyPress)
   }, [makeMove])
 
-  useEffect(() => {
-    const saved = localStorage.getItem('2048-best-score')
-    if (saved) setBestScore(parseInt(saved))
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('2048-best-score', bestScore.toString())
-  }, [bestScore])
-
   return (
-    <div className="flex flex-col items-center space-y-6 p-6">
+    <div className="flex flex-col items-center space-y-6 p-6 w-full">
       {/* Header */}
-      <div className="text-center">
-        <h2 className="text-3xl font-bold text-foreground mb-2">🎯 2048</h2>
-        <div className="flex items-center justify-center space-x-8 text-sm">
-          <span className="text-muted-foreground">Score: <span className="text-accent font-bold">{score}</span></span>
-          <span className="text-muted-foreground">Best: <span className="text-accent font-bold">{bestScore}</span></span>
+      <div className="text-center w-full">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">2048</h2>
+        <div className="flex items-center justify-center space-x-8 text-sm md:text-base">
+          <span className="text-white/70">
+            Score: <span className="text-sky-400 font-bold text-xl">{score}</span>
+          </span>
+          <span className="text-white/70">
+            High Score: <span className="text-amber-400 font-bold text-xl">{highScore.score}</span>
+            <span className="block text-xs text-white/50 mt-1">{highScore.username}</span>
+          </span>
         </div>
       </div>
 
       {/* Game Board */}
-      <div className="relative">
+      <div 
+        ref={gameContainerRef}
+        className="relative w-full max-w-lg"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
         {!isInitialized ? (
-          <div className="grid grid-cols-4 gap-2 bg-secondary/20 rounded-lg p-4 border-2 border-secondary/30">
+          <div className="grid grid-cols-4 gap-3 bg-black/60 rounded-lg p-4 border-2 border-sky-400/40">
             {Array.from({ length: 16 }).map((_, index) => (
               <div
                 key={index}
-                className="w-16 h-16 rounded-lg flex items-center justify-center bg-secondary/20 animate-pulse"
+                className="aspect-square rounded-lg flex items-center justify-center bg-gray-800 animate-pulse"
               />
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-2 bg-secondary/20 rounded-lg p-4 border-2 border-secondary/30">
+          <div className="grid grid-cols-4 gap-3 bg-black/60 rounded-lg p-4 border-2 border-sky-400/40">
             {grid.map((row, rowIndex) =>
               row.map((value, colIndex) => (
-                <motion.div
+                <div
                   key={`${rowIndex}-${colIndex}`}
-                  className={`w-16 h-16 rounded-lg flex items-center justify-center text-lg font-bold ${getTileColor(value)}`}
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ duration: 0.2 }}
+                  className={`aspect-square rounded-lg flex items-center justify-center text-xl md:text-2xl font-bold ${getTileColor(value)}`}
                 >
                   {value || ''}
-                </motion.div>
+                </div>
               ))
             )}
           </div>
@@ -375,29 +448,68 @@ export default function Game2048() {
 
         {/* Game Over Overlay */}
         <AnimatePresence>
-          {gameStatus !== 'playing' && (
+          {gameStatus === 'namePrompt' && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className="absolute inset-0 bg-black/90 backdrop-blur-sm rounded-lg flex items-center justify-center"
+            >
+              <div className="text-center space-y-4 p-6 max-w-md">
+                <h3 className="text-2xl font-bold text-amber-400">🎉 New High Score!</h3>
+                <p className="text-white text-xl">Score: {score}</p>
+                <input
+                  type="text"
+                  placeholder="Enter your name"
+                  value={playerName}
+                  onChange={(e) => setPlayerName(e.target.value)}
+                  className="w-full px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-sky-400"
+                  maxLength={20}
+                  autoFocus
+                  onKeyPress={(e) => e.key === 'Enter' && handleSaveHighScore()}
+                />
+                <div className="flex space-x-3">
+                  <button
+                    onClick={handleSaveHighScore}
+                    disabled={!playerName.trim()}
+                    className="flex-1 px-6 py-3 bg-sky-500 hover:bg-sky-600 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors font-semibold"
+                  >
+                    Save
+                  </button>
+                  <button
+                    onClick={resetGame}
+                    className="flex-1 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors"
+                  >
+                    Skip
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {(gameStatus === 'won' || gameStatus === 'lost') && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-black/70 backdrop-blur-sm rounded-lg flex items-center justify-center"
+              className="absolute inset-0 bg-black/90 backdrop-blur-sm rounded-lg flex items-center justify-center"
             >
               <div className="text-center text-white p-6">
                 <h3 className="text-2xl font-bold mb-4">
                   {gameStatus === 'won' ? '🎉 You Won!' : '😞 Game Over'}
                 </h3>
-                <p className="text-lg mb-6">Final Score: {score}</p>
+                <p className="text-lg mb-6">Final Score: <span className="text-sky-400 font-bold">{score}</span></p>
                 <div className="flex space-x-4">
                   <button
                     onClick={resetGame}
-                    className="px-6 py-3 bg-accent text-accent-foreground rounded-lg hover:bg-accent/90 transition-colors font-medium"
+                    className="px-6 py-3 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition-colors font-semibold"
                   >
                     Try Again
                   </button>
                   {gameStatus === 'won' && (
                     <button
                       onClick={continueGame}
-                      className="px-6 py-3 bg-secondary text-secondary-foreground rounded-lg hover:bg-secondary/90 transition-colors font-medium"
+                      className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors font-semibold"
                     >
                       Continue
                     </button>
@@ -409,20 +521,65 @@ export default function Game2048() {
         </AnimatePresence>
       </div>
 
-      {/* Controls */}
-      <div className="text-center space-y-4">
+      {/* Arrow Pad Controls */}
+      <div className="flex flex-col items-center space-y-3">
+        <div className="grid grid-cols-3 gap-2">
+          <div></div>
+          <button
+            onClick={() => makeMove('up')}
+            className="w-14 h-14 bg-gray-800 hover:bg-sky-600 active:bg-sky-700 border border-gray-700 rounded-lg flex items-center justify-center text-white transition-colors touch-none"
+            aria-label="Move up"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            </svg>
+          </button>
+          <div></div>
+          <button
+            onClick={() => makeMove('left')}
+            className="w-14 h-14 bg-gray-800 hover:bg-sky-600 active:bg-sky-700 border border-gray-700 rounded-lg flex items-center justify-center text-white transition-colors touch-none"
+            aria-label="Move left"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <div className="w-14 h-14"></div>
+          <button
+            onClick={() => makeMove('right')}
+            className="w-14 h-14 bg-gray-800 hover:bg-sky-600 active:bg-sky-700 border border-gray-700 rounded-lg flex items-center justify-center text-white transition-colors touch-none"
+            aria-label="Move right"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+          <div></div>
+          <button
+            onClick={() => makeMove('down')}
+            className="w-14 h-14 bg-gray-800 hover:bg-sky-600 active:bg-sky-700 border border-gray-700 rounded-lg flex items-center justify-center text-white transition-colors touch-none"
+            aria-label="Move down"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div></div>
+        </div>
         <button
           onClick={resetGame}
-          className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-medium"
+          className="px-8 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors font-semibold"
         >
           🔄 New Game
         </button>
+      </div>
 
-        <div className="text-sm text-muted-foreground max-w-md">
-          <p className="mb-2">🎮 <strong>How to Play:</strong></p>
-          <p>Use arrow keys or swipe to move tiles. When two tiles with the same number touch, they merge into one!</p>
-          <p className="mt-2">🏆 <strong>Goal:</strong> Create a tile with the number 2048!</p>
-        </div>
+      {/* Controls Info */}
+      <div className="text-center text-sm text-white/60 space-y-2 max-w-md">
+        <p><strong className="text-white/80">Desktop:</strong> Arrow keys to move</p>
+        <p><strong className="text-white/80">Mobile:</strong> Swipe to move</p>
+        <p><strong className="text-white/80">Universal:</strong> Use arrow pad above</p>
+        <p className="text-white/50 text-xs mt-3">Merge tiles to reach 2048!</p>
       </div>
     </div>
   )

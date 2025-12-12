@@ -35,7 +35,7 @@ export default async function AboutPage() {
 
     return (
         <div className="min-h-screen pt-32 px-4">
-            <div className="max-w-4xl mx-auto">
+            <div className="w-[85%] mx-auto">
                 <div className="glass-morphism rounded-2xl p-8 border border-white/10">
                     <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-white prose-p:text-white/70 prose-a:text-sky-400 prose-strong:text-white">
                         {hasDbContent ? (
