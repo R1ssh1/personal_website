@@ -115,7 +115,7 @@ export default function AdminDashboard() {
           key={activeTab}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.15 }}
           className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6"
         >
           {activeTab === 'certifications' && <CertificationsManager />}
@@ -1063,10 +1063,10 @@ function ContactMessagesManager() {
                   if (!message.read) handleMarkAsRead(message.id)
                 }}
                 className={`p-4 rounded-xl border cursor-pointer transition-all ${selectedMessage?.id === message.id
-                    ? 'bg-white/10 border-blue-500/50'
-                    : message.read
-                      ? 'bg-white/5 border-white/10 hover:bg-white/10'
-                      : 'bg-blue-500/10 border-blue-500/30 hover:bg-blue-500/20'
+                  ? 'bg-white/10 border-blue-500/50'
+                  : message.read
+                    ? 'bg-white/5 border-white/10 hover:bg-white/10'
+                    : 'bg-blue-500/10 border-blue-500/30 hover:bg-blue-500/20'
                   }`}
               >
                 <div className="flex justify-between items-start mb-2">

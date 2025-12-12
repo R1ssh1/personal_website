@@ -122,11 +122,12 @@ export default function MindPalace() {
                                     <motion.button
                                         key={category}
                                         onClick={() => setSelectedCategory(category)}
-                                        className={`px-6 py-2 rounded-full transition-all duration-300 font-medium ${selectedCategory === category
+                                        className={`px-6 py-2 rounded-full transition-all duration-150 font-medium ${selectedCategory === category
                                             ? 'bg-sky-500/30 text-sky-400 border border-sky-500/30'
                                             : 'glass-morphism text-white/60 hover:text-sky-400 border border-white/10 hover:border-sky-500/30'
                                             }`}
                                         whileHover={{ scale: 1.05 }}
+                                        transition={{ duration: 0.15 }}
                                         whileTap={{ scale: 0.95 }}
                                     >
                                         {category}
@@ -154,7 +155,7 @@ export default function MindPalace() {
                             {filteredPosts.map((post, index) => (
                                 <Link key={post.id} href={`/blog/${createSlug(post.title)}`}>
                                     <motion.article
-                                        className="h-full glass-morphism border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-300 group cursor-pointer"
+                                        className="h-full glass-morphism border border-white/10 rounded-2xl p-6 hover:border-white/20 transition-all duration-150 group cursor-pointer"
                                         style={{ background: `linear-gradient(135deg, ${tintColors[index % tintColors.length]}, transparent)` }}
                                         variants={{
                                             hidden: { opacity: 0, y: 20 },
@@ -177,7 +178,7 @@ export default function MindPalace() {
                                         </div>
 
                                         {/* Title */}
-                                        <h2 className="text-xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors duration-300">
+                                        <h2 className="text-xl font-bold text-white mb-3 group-hover:text-sky-400 transition-colors duration-150">
                                             {post.title}
                                         </h2>
 
@@ -206,7 +207,7 @@ export default function MindPalace() {
                                         {/* Read More */}
                                         <div className="flex items-center justify-end text-sm">
                                             <motion.span
-                                                className="text-sky-400 flex items-center gap-1 group-hover:gap-2 transition-all duration-300"
+                                                className="text-sky-400 flex items-center gap-1 group-hover:gap-2 transition-all duration-150"
                                             >
                                                 Read More
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

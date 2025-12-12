@@ -63,7 +63,7 @@ export function Navigation() {
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="fixed top-4 left-0 right-0 z-50 hidden md:block"
+        className="fixed top-4 left-0 right-0 z-50 hidden md:block transition-opacity duration-150"
       >
         <div className="flex justify-center">
           <div className="glass-morphism rounded-full px-8 py-4">
@@ -71,7 +71,7 @@ export function Navigation() {
               {/* Logo */}
               <Link
                 href="/"
-                className="font-logo text-xl font-semibold text-text hover:text-sky-400 transition-colors duration-300"
+                className="font-logo text-xl font-semibold text-text hover:text-sky-400 transition-colors duration-150"
               >
                 Rishi Jha
               </Link>
@@ -82,7 +82,7 @@ export function Navigation() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative font-nav text-sm font-medium transition-colors duration-300 group ${pathname === item.href
+                    className={`relative font-nav text-sm font-medium transition-colors duration-150 group ${pathname === item.href
                       ? 'text-sky-400'
                       : 'text-muted hover:text-sky-400'
                       }`}
@@ -93,7 +93,7 @@ export function Navigation() {
                       <motion.div
                         layoutId="activeNav"
                         className="absolute -bottom-1 left-0 right-0 h-0.5 bg-sky-400 rounded-full"
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.15 }}
                       />
                     )}
                   </Link>
@@ -105,13 +105,13 @@ export function Navigation() {
       </motion.nav>
 
       {/* Mobile Navigation */}
-      <nav className="fixed top-4 left-4 right-4 z-50 md:hidden">
+      <nav className="fixed top-4 left-4 right-4 z-50 md:hidden transition-opacity duration-150">
         <div className="glass-morphism rounded-full px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Mobile Logo */}
             <Link
               href="/"
-              className="font-logo text-lg font-semibold text-text hover:text-sky-400 transition-colors duration-300"
+              className="font-logo text-lg font-semibold text-text hover:text-sky-400 transition-colors duration-150"
             >
               Rishi Jha
             </Link>
@@ -120,13 +120,13 @@ export function Navigation() {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-full text-muted hover:text-text transition-colors duration-300 hover:bg-secondary/50"
+                className="p-2 rounded-full text-muted hover:text-text transition-colors duration-150 hover:bg-secondary/50"
                 aria-label="Toggle menu"
               >
                 <motion.div
                   initial={false}
                   animate={{ rotate: mobileMenuOpen ? 90 : 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.15 }}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -154,7 +154,7 @@ export function Navigation() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`font-nav text-sm font-medium transition-colors duration-300 ${pathname === item.href
+                      className={`font-nav text-sm font-medium transition-colors duration-150 ${pathname === item.href
                         ? 'text-sky-400'
                         : 'text-muted hover:text-sky-400'
                         }`}

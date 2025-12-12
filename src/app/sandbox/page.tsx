@@ -79,7 +79,7 @@ export default function SandboxPage() {
                     {sandboxSections.map((section, index) => (
                         <motion.div
                             key={section.title}
-                            className="glass-morphism rounded-xl p-8 border border-white/10 hover:border-white/20 transition-all duration-300"
+                            className="glass-morphism rounded-xl p-8 border border-white/10 hover:border-white/20 transition-all duration-150"
                             style={{ background: `linear-gradient(135deg, ${sectionTints[index]}, transparent)` }}
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -99,11 +99,12 @@ export default function SandboxPage() {
                                 {section.items.map((item, itemIndex) => (
                                     <motion.div
                                         key={item.name}
-                                        className={`p-4 bg-white/5 rounded-xl border border-white/10 transition-all duration-300 ${item.status === 'available'
+                                        className={`p-4 bg-white/5 rounded-xl border border-white/10 transition-all duration-150 ${item.status === 'available'
                                             ? 'hover:border-sky-500/30 cursor-pointer hover:bg-sky-500/10'
                                             : 'hover:border-white/20'
                                             }`}
                                         whileHover={{ scale: 1.02 }}
+                                        transition={{ duration: 0.15 }}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ duration: 0.4, delay: (index * 0.1) + (itemIndex * 0.05) }}
@@ -157,13 +158,13 @@ export default function SandboxPage() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
                             href="/projects"
-                            className="px-6 py-3 bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 rounded-xl transition-all duration-300 font-medium border border-sky-500/30 hover:scale-105"
+                            className="px-6 py-3 bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 rounded-xl transition-all duration-150 font-medium border border-sky-500/30 hover:scale-105"
                         >
                             View My Projects
                         </Link>
                         <Link
                             href="/about"
-                            className="px-6 py-3 glass-morphism text-white hover:text-sky-400 border border-white/10 hover:border-sky-500/30 rounded-xl transition-all duration-300 font-medium"
+                            className="px-6 py-3 glass-morphism text-white hover:text-sky-400 border border-white/10 hover:border-sky-500/30 rounded-xl transition-all duration-150 font-medium"
                         >
                             Learn About Me
                         </Link>

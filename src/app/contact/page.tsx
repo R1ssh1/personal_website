@@ -78,7 +78,7 @@ export default function ContactPage() {
                     {contactMethods.map((method, index) => (
                         <motion.div
                             key={method.title}
-                            className="glass-morphism rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-300"
+                            className="glass-morphism rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-150"
                             style={{ background: `linear-gradient(135deg, ${method.tint}, transparent)` }}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -99,7 +99,7 @@ export default function ContactPage() {
                                             href={method.link}
                                             target="_blank"
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all duration-300 font-medium"
+                                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl transition-all duration-150 font-medium"
                                         >
                                             {method.action}
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,7 +109,7 @@ export default function ContactPage() {
                                     ) : (
                                         <button
                                             onClick={method.onClick}
-                                            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-300 font-medium ${emailCopied
+                                            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl transition-all duration-150 font-medium ${emailCopied
                                                 ? 'bg-green-500/20 text-green-400 border border-green-500/30'
                                                 : 'bg-white/10 hover:bg-white/20 text-white'
                                                 }`}

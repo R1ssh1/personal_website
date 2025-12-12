@@ -125,13 +125,13 @@ export function Hero() {
             <motion.div
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               className="relative group"
             >
               <StarBorder color="rgba(121, 173, 255, 1)">
                 <Link
                   href="/projects"
-                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-accent/10 text-white border border-white/20 rounded-xl hover:bg-accent/20 transition-all duration-300 font-semibold backdrop-blur-[2px]"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-accent/10 text-white border border-white/20 rounded-xl hover:bg-accent/20 transition-all duration-150 font-semibold backdrop-blur-[2px]"
                 >
                   View My Projects
                 </Link>
@@ -141,12 +141,12 @@ export function Hero() {
             <motion.div
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               className="relative group"
             >
               <Link
                 href="/about"
-                className="group relative inline-flex items-center justify-center mb-2 px-8 py-4 glass-morphism text-text hover:text-white border border-secondary/30 hover:border-accent/50 rounded-xl transition-all duration-500 font-semibold backdrop-blur-sm overflow-hidden transform-gpu"
+                className="group relative inline-flex items-center justify-center mb-2 px-8 py-4 glass-morphism text-text hover:text-white border border-secondary/30 hover:border-accent/50 rounded-xl transition-all duration-150 font-semibold backdrop-blur-sm overflow-hidden transform-gpu"
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-accent/80 to-purple-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -187,7 +187,7 @@ export function Hero() {
               href="https://github.com/R1ssh1"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-accent transition-all duration-500 rounded-xl border border-secondary/20 hover:border-purple-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
+              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-accent transition-all duration-150 rounded-xl border border-secondary/20 hover:border-purple-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
               aria-label="GitHub"
               variants={{
                 hidden: { opacity: 0, y: 20, scale: 0.8, rotateX: -45 },
@@ -198,7 +198,7 @@ export function Hero() {
                 y: -4
               }}
               whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               onMouseMove={(e) => handleMouseMove(e, githubX, githubY, githubRotation)}
               onMouseLeave={() => handleMouseLeave(githubX, githubY, githubRotation)}
               style={{ x: githubX, y: githubY }}
@@ -218,7 +218,7 @@ export function Hero() {
               href="https://www.linkedin.com/in/rishi-jha-85b52b250/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-blue-500 transition-all duration-500 rounded-xl border border-secondary/20 hover:border-blue-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
+              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-blue-500 transition-all duration-150 rounded-xl border border-secondary/20 hover:border-blue-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
               aria-label="LinkedIn"
               variants={{
                 hidden: { opacity: 0, y: 20, scale: 0.8, rotateX: -45 },
@@ -229,7 +229,7 @@ export function Hero() {
                 y: -4
               }}
               whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               onMouseMove={(e) => handleMouseMove(e, linkedinX, linkedinY, linkedinRotation)}
               onMouseLeave={() => handleMouseLeave(linkedinX, linkedinY, linkedinRotation)}
               style={{ x: linkedinX, y: linkedinY }}
@@ -246,7 +246,7 @@ export function Hero() {
 
             {/* Email Icon */}
             <motion.button
-              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-green-500 transition-all duration-500 rounded-xl border border-secondary/20 hover:border-green-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
+              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-green-500 transition-all duration-150 rounded-xl border border-secondary/20 hover:border-green-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
               aria-label="Copy email to clipboard"
               variants={{
                 hidden: { opacity: 0, y: 20, scale: 0.8, rotateX: -45 },
@@ -257,7 +257,7 @@ export function Hero() {
                 y: -4
               }}
               whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               onMouseMove={(e) => handleMouseMove(e, emailX, emailY, emailRotation)}
               onMouseLeave={() => handleMouseLeave(emailX, emailY, emailRotation)}
               style={{ x: emailX, y: emailY }}

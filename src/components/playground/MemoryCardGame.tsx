@@ -212,8 +212,8 @@ export default function MemoryCardGame() {
             key={level}
             onClick={() => resetGame(level as Difficulty)}
             className={`px-4 py-2 rounded-lg transition-colors capitalize ${difficulty === level
-                ? 'bg-accent text-white'
-                : 'bg-secondary hover:bg-secondary/80 text-foreground'
+              ? 'bg-accent text-white'
+              : 'bg-secondary hover:bg-secondary/80 text-foreground'
               }`}
           >
             {level}
@@ -240,13 +240,14 @@ export default function MemoryCardGame() {
               className="relative w-20 h-20 cursor-pointer"
               onClick={() => flipCard(card.id)}
               whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.15 }}
               whileTap={{ scale: 0.95 }}
             >
               <motion.div
                 className="absolute inset-0 rounded-lg preserve-3d"
                 initial={false}
                 animate={{ rotateY: card.isFlipped || card.isMatched ? 180 : 0 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.3 }}
               >
                 {/* Card Back */}
                 <div className="absolute inset-0 w-full h-full bg-gradient-to-br from-accent/20 to-accent/40 rounded-lg flex items-center justify-center backface-hidden border-2 border-accent/30">
@@ -256,8 +257,8 @@ export default function MemoryCardGame() {
                 {/* Card Front */}
                 <div
                   className={`absolute inset-0 w-full h-full rounded-lg flex flex-col items-center justify-center backface-hidden border-2 transform rotate-y-180 ${card.isMatched
-                      ? 'bg-gradient-to-br from-green-100 to-green-200 border-green-300'
-                      : 'bg-gradient-to-br from-blue-100 to-blue-200 border-blue-300'
+                    ? 'bg-gradient-to-br from-green-100 to-green-200 border-green-300'
+                    : 'bg-gradient-to-br from-blue-100 to-blue-200 border-blue-300'
                     }`}
                 >
                   <span className="text-2xl mb-1">{card.icon}</span>

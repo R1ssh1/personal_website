@@ -30,10 +30,10 @@ export function CertificateCard({ certification, onClick, tintColor }: Certifica
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -5, scale: 1.02 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.15 }}
     >
       <div
-        className="h-full glass-morphism rounded-xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300"
+        className="h-full glass-morphism rounded-xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-150"
         style={{ background: `linear-gradient(135deg, ${cardTint}, transparent)` }}
       >
         {/* Certificate Image */}
@@ -46,7 +46,7 @@ export function CertificateCard({ certification, onClick, tintColor }: Certifica
           />
 
           {/* Hover Overlay with Details */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex flex-col justify-end p-4">
             <h3 className="text-white font-bold text-lg mb-1 line-clamp-2">
               {certification.title}
             </h3>
@@ -66,7 +66,7 @@ export function CertificateCard({ certification, onClick, tintColor }: Certifica
           )}
 
           {/* View indicator */}
-          <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
             <div className="bg-white/10 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1.5">
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -75,16 +75,6 @@ export function CertificateCard({ certification, onClick, tintColor }: Certifica
               View
             </div>
           </div>
-        </div>
-
-        {/* Card Footer */}
-        <div className="p-4">
-          <h3 className="text-white font-semibold text-base mb-1 line-clamp-1 group-hover:text-sky-400 transition-colors">
-            {certification.title}
-          </h3>
-          <p className="text-white/50 text-sm">
-            {certification.issuer}
-          </p>
         </div>
       </div>
     </motion.div>

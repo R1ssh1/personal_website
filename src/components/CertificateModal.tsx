@@ -35,11 +35,14 @@ export function CertificateModal({ certification, isOpen, onClose }: Certificate
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden'
+      document.body.setAttribute('data-modal-open', 'true')
     } else {
       document.body.style.overflow = ''
+      document.body.removeAttribute('data-modal-open')
     }
     return () => {
       document.body.style.overflow = ''
+      document.body.removeAttribute('data-modal-open')
     }
   }, [isOpen])
 
@@ -86,13 +89,13 @@ export function CertificateModal({ certification, isOpen, onClose }: Certificate
               initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
-              transition={{ duration: 0.3, ease: 'easeOut' }}
+              transition={{ duration: 0.15, ease: 'easeOut' }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Fixed Close Button - positioned absolutely at top right of modal */}
               <button
                 onClick={onClose}
-                className="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center bg-black/60 hover:bg-black/80 text-white rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/10"
+                className="absolute top-4 right-4 z-20 w-10 h-10 flex items-center justify-center bg-black/60 hover:bg-black/80 text-white rounded-full transition-all duration-150 hover:scale-110 backdrop-blur-sm border border-white/10"
                 aria-label="Close modal"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,7 +119,7 @@ export function CertificateModal({ certification, isOpen, onClose }: Certificate
                     />
 
                     {/* Click to expand indicator */}
-                    <div className="absolute inset-0 bg-black/0 hover:bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-300">
+                    <div className="absolute inset-0 bg-black/0 hover:bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 transition-all duration-150">
                       <div className="bg-black/60 backdrop-blur-sm text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -211,7 +214,7 @@ export function CertificateModal({ certification, isOpen, onClose }: Certificate
                         href={certification.verificationLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 rounded-xl border border-sky-500/30 transition-all duration-300 hover:scale-105 font-medium"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 rounded-xl border border-sky-500/30 transition-all duration-150 hover:scale-105 font-medium"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -240,7 +243,7 @@ export function CertificateModal({ certification, isOpen, onClose }: Certificate
               >
                 <button
                   onClick={closeFullscreen}
-                  className="absolute top-4 right-4 z-10 w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-300 hover:scale-110 backdrop-blur-sm border border-white/10"
+                  className="absolute top-4 right-4 z-10 w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-150 hover:scale-110 backdrop-blur-sm border border-white/10"
                   aria-label="Close fullscreen"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -258,7 +261,7 @@ export function CertificateModal({ certification, isOpen, onClose }: Certificate
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   exit={{ scale: 0.8, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.15 }}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <Image

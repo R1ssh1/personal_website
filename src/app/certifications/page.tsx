@@ -85,7 +85,7 @@ export default function CertificationsPage() {
             <p className="text-red-400 mb-4">{error}</p>
             <button
               onClick={fetchCertifications}
-              className="px-6 py-3 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-all duration-300 font-medium border border-red-500/30"
+              className="px-6 py-3 bg-red-500/20 text-red-400 rounded-xl hover:bg-red-500/30 transition-all duration-150 font-medium border border-red-500/30"
             >
               Try Again
             </button>

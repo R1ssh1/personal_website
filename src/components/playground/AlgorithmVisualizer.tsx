@@ -651,14 +651,14 @@ export default function AlgorithmVisualizer() {
           {array.map((element, index) => (
             <motion.div
               key={element.id}
-              className={`${getBarColor(element)} rounded-t transition-colors duration-300 flex items-end justify-center relative`}
+              className={`${getBarColor(element)} rounded-t transition-colors duration-150 flex items-end justify-center relative`}
               style={{
                 height: `${(element.value / maxValue) * 250}px`,
                 width: `${Math.max(800 / arraySize - 2, 8)}px`,
                 minWidth: '8px'
               }}
               layout
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.15 }}
             >
               {arraySize <= 20 && (
                 <span className="text-white text-xs font-bold mb-1">

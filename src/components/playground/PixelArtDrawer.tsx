@@ -186,8 +186,8 @@ export default function PixelArtDrawer() {
               key={toolType}
               onClick={() => setTool(toolType as typeof tool)}
               className={`px-4 py-2 rounded-lg transition-colors capitalize ${tool === toolType
-                  ? 'bg-accent text-white'
-                  : 'bg-secondary hover:bg-secondary/80 text-foreground'
+                ? 'bg-accent text-white'
+                : 'bg-secondary hover:bg-secondary/80 text-foreground'
                 }`}
             >
               {toolType === 'pen' && '✏️'}
@@ -229,11 +229,12 @@ export default function PixelArtDrawer() {
             key={color}
             onClick={() => setCurrentColor(color)}
             className={`w-8 h-8 rounded-lg border-2 transition-all ${currentColor === color
-                ? 'border-accent scale-110'
-                : 'border-secondary/30 hover:border-accent/50'
+              ? 'border-accent scale-110'
+              : 'border-secondary/30 hover:border-accent/50'
               }`}
             style={{ backgroundColor: color }}
             whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.15 }}
             whileTap={{ scale: 0.95 }}
           />
         ))}

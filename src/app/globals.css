@@ -111,7 +111,7 @@
   ::-webkit-scrollbar {
     display: none;
   }
-  
+
   * {
     scrollbar-width: none;
   }
@@ -242,4 +242,10 @@
     transform: translate(100%, 0%);
     opacity: 0;
   }
+}
+
+/* Hide navigation when modal is open */
+body[data-modal-open] nav {
+  opacity: 0 !important;
+  pointer-events: none !important;
 }

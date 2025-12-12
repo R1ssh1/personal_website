@@ -16,7 +16,7 @@ if (!hasImages) {
   console.log('\n⚠️ Adding images column...');
   db.exec(`ALTER TABLE projects ADD COLUMN images TEXT DEFAULT '[]'`);
   console.log('✅ Images column added!');
-  
+
   const updatedCols = db.prepare('PRAGMA table_info(projects)').all();
   console.log('\nUpdated columns:');
   updatedCols.forEach(col => {
