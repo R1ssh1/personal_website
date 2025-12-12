@@ -181,7 +181,7 @@ export default function CodeTypingChallenge() {
       setIsCompleted(true)
       setStats(finalStats)
       setGameStatus('completed')
-      
+
       // Check if high score was beaten
       if (finalStats.wpm > highScore.score) {
         setGameStatus('namePrompt')

@@ -297,7 +297,7 @@ export default function Game2048() {
       // Check for game over
       else if (!hasValidMove(newGrid)) {
         setGameStatus('lost')
-        
+
         // Check if high score was beaten
         if (newScore > highScore.score) {
           setGameStatus('namePrompt')
@@ -416,7 +416,7 @@ export default function Game2048() {
       </div>
 
       {/* Game Board */}
-      <div 
+      <div
         ref={gameContainerRef}
         className="relative w-full max-w-lg"
         onTouchStart={handleTouchStart}

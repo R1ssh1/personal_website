@@ -19,7 +19,7 @@ export default function MemoryCardGamePage() {
         </Link>
 
         {/* Glass Container - 75% minimum width */}
-        <motion.div 
+        <motion.div
           className="w-full min-h-[75vh] bg-white/5 backdrop-blur-xl rounded-2xl p-6 md:p-8 border border-white/10 shadow-2xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
