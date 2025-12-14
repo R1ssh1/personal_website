@@ -27,8 +27,7 @@ const sandboxSections: Array<{
             items: [
                 { name: 'Snake Game', status: 'available', description: 'Classic snake with smooth controls and scoring', link: '/sandbox/games/snake' },
                 { name: '2048 Game', status: 'available', description: 'Slide numbered tiles to reach 2048', link: '/sandbox/games/2048' },
-                { name: 'Code Typing Challenge', status: 'available', description: 'Measure your coding WPM with syntax highlighting', link: '/sandbox/challenges/typing' },
-                { name: 'Memory Card Game', status: 'available', description: 'Match programming concepts and tech logos', link: '/sandbox/games/memory' }
+                { name: 'Code Typing Challenge', status: 'available', description: 'Measure your coding WPM with syntax highlighting', link: '/sandbox/challenges/typing' }
             ]
         },
         {
@@ -79,7 +78,7 @@ export default function SandboxPage() {
                     {sandboxSections.map((section, index) => (
                         <motion.div
                             key={section.title}
-                            className="glass-morphism rounded-xl p-8 border border-white/10 hover:border-white/20 transition-all duration-150"
+                            className="glass-morphism rounded-xl p-8 border border-white/10 hover:border-white/20 transition-all duration-75"
                             style={{ background: `linear-gradient(135deg, ${sectionTints[index]}, transparent)` }}
                             initial={{ opacity: 0, y: 30 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -99,14 +98,15 @@ export default function SandboxPage() {
                                 {section.items.map((item, itemIndex) => (
                                     <motion.div
                                         key={item.name}
-                                        className={`p-4 bg-white/5 rounded-xl border border-white/10 transition-all duration-150 ${item.status === 'available'
+                                        className={`p-4 bg-white/5 rounded-xl border border-white/10 transition-all duration-100 ${item.status === 'available'
                                             ? 'hover:border-sky-500/30 cursor-pointer hover:bg-sky-500/10'
                                             : 'hover:border-white/20'
                                             }`}
-                                        whileHover={{ scale: 1.02 }}
+                                        whileHover={{ scale: 1.03 }}
+                                        whileTap={{ scale: 0.98 }}
                                         initial={{ opacity: 0, x: -20 }}
                                         animate={{ opacity: 1, x: 0 }}
-                                        transition={{ duration: 0.4, delay: (index * 0.1) + (itemIndex * 0.05) }}
+                                        transition={{ duration: 0.15 }}
                                         onClick={() => {
                                             if (item.status === 'available' && item.link) {
                                                 window.location.href = item.link
@@ -157,13 +157,13 @@ export default function SandboxPage() {
                     <div className="flex flex-col sm:flex-row gap-4 justify-center">
                         <Link
                             href="/projects"
-                            className="px-6 py-3 bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 rounded-xl transition-all duration-150 font-medium border border-sky-500/30 hover:scale-105"
+                            className="px-6 py-3 bg-sky-500/20 hover:bg-sky-500/30 text-sky-400 rounded-xl transition-all duration-100 font-medium border border-sky-500/30 hover:scale-105"
                         >
                             View My Projects
                         </Link>
                         <Link
                             href="/about"
-                            className="px-6 py-3 glass-morphism text-white hover:text-sky-400 border border-white/10 hover:border-sky-500/30 rounded-xl transition-all duration-150 font-medium"
+                            className="px-6 py-3 glass-morphism text-white hover:text-sky-400 border border-white/10 hover:border-sky-500/30 rounded-xl transition-all duration-100 font-medium"
                         >
                             Learn About Me
                         </Link>
