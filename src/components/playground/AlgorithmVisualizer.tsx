@@ -648,15 +648,15 @@ export default function AlgorithmVisualizer() {
         setComparisons(prev => prev + 2)
 
         if (arr[i].value <= arr[j].value && arr[i].value <= arr[k].value) {
-          temp.push({...arr[i]})
+          temp.push({ ...arr[i] })
           arr[i].isComparing = false
           i++
         } else if (arr[j].value <= arr[i].value && arr[j].value <= arr[k].value) {
-          temp.push({...arr[j]})
+          temp.push({ ...arr[j] })
           arr[j].isComparing = false
           j++
         } else {
-          temp.push({...arr[k]})
+          temp.push({ ...arr[k] })
           arr[k].isComparing = false
           k++
         }
@@ -664,31 +664,31 @@ export default function AlgorithmVisualizer() {
 
       while (i < mid1 && j < mid2) {
         if (arr[i].value <= arr[j].value) {
-          temp.push({...arr[i++]})
+          temp.push({ ...arr[i++] })
         } else {
-          temp.push({...arr[j++]})
+          temp.push({ ...arr[j++] })
         }
       }
 
       while (j < mid2 && k <= high) {
         if (arr[j].value <= arr[k].value) {
-          temp.push({...arr[j++]})
+          temp.push({ ...arr[j++] })
         } else {
-          temp.push({...arr[k++]})
+          temp.push({ ...arr[k++] })
         }
       }
 
       while (i < mid1 && k <= high) {
         if (arr[i].value <= arr[k].value) {
-          temp.push({...arr[i++]})
+          temp.push({ ...arr[i++] })
         } else {
-          temp.push({...arr[k++]})
+          temp.push({ ...arr[k++] })
         }
       }
 
-      while (i < mid1) temp.push({...arr[i++]})
-      while (j < mid2) temp.push({...arr[j++]})
-      while (k <= high) temp.push({...arr[k++]})
+      while (i < mid1) temp.push({ ...arr[i++] })
+      while (j < mid2) temp.push({ ...arr[j++] })
+      while (k <= high) temp.push({ ...arr[k++] })
 
       for (let idx = 0; idx < temp.length; idx++) {
         arr[low + idx] = temp[idx]
@@ -738,7 +738,7 @@ export default function AlgorithmVisualizer() {
     for (let i = n - 1; i >= 0; i--) {
       arr[i].isSwapping = true
       await updateArray(arr, `Placing ${arr[i].value} at position ${count[arr[i].value - min] - 1}`)
-      output[count[arr[i].value - min] - 1] = {...arr[i]}
+      output[count[arr[i].value - min] - 1] = { ...arr[i] }
       count[arr[i].value - min]--
       arr[i].isSwapping = false
     }
@@ -774,7 +774,7 @@ export default function AlgorithmVisualizer() {
         const digit = Math.floor(arr[i].value / exp) % 10
         arr[i].isSwapping = true
         await updateArray(arr, `Placing ${arr[i].value} based on digit ${digit}`)
-        output[count[digit] - 1] = {...arr[i]}
+        output[count[digit] - 1] = { ...arr[i] }
         count[digit]--
         arr[i].isSwapping = false
       }
@@ -801,7 +801,7 @@ export default function AlgorithmVisualizer() {
       arr[i].isComparing = true
       const bucketIndex = Math.floor(((arr[i].value - min) / (max - min + 1)) * bucketCount)
       await updateArray(arr, `Placing ${arr[i].value} in bucket ${bucketIndex}`)
-      buckets[Math.min(bucketIndex, bucketCount - 1)].push({...arr[i]})
+      buckets[Math.min(bucketIndex, bucketCount - 1)].push({ ...arr[i] })
       arr[i].isComparing = false
     }
 
@@ -809,7 +809,7 @@ export default function AlgorithmVisualizer() {
     for (let i = 0; i < bucketCount; i++) {
       if (shouldStopRef.current) return
       buckets[i].sort((a, b) => a.value - b.value)
-      
+
       for (const element of buckets[i]) {
         element.isSwapping = true
         arr[index] = element
@@ -835,7 +835,7 @@ export default function AlgorithmVisualizer() {
     for (let i = 0; i < n; i++) {
       arr[i].isComparing = true
       await updateArray(arr, `Placing ${arr[i].value} in hole ${arr[i].value - min}`)
-      holes[arr[i].value - min].push({...arr[i]})
+      holes[arr[i].value - min].push({ ...arr[i] })
       arr[i].isComparing = false
     }
 
@@ -912,7 +912,7 @@ export default function AlgorithmVisualizer() {
             arr[i].isSwapping = true
             arr[j].isSwapping = true
             await updateArray(arr, `Swapping ${arr[i].value} and ${arr[j].value}`)
-            ;[arr[i], arr[j]] = [arr[j], arr[i]]
+              ;[arr[i], arr[j]] = [arr[j], arr[i]]
             setSwaps(prev => prev + 1)
             arr[i].isSwapping = false
             arr[j].isSwapping = false

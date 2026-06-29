@@ -108,15 +108,14 @@ export function Hero() {
           <p
             className="text-xl md:text-2xl text-muted mb-8 font-medium"
           >
-            Computer Science Student & Software Developer
+            Software Developer & CSE Graduate
           </p>
 
           <p
             className="text-lg text-muted mb-12 max-w-2xl mx-auto leading-relaxed"
           >
             Passionate about building innovative solutions and exploring the latest technologies.
-            Currently in my 4th year of Computer Science, with a focus on full-stack development
-            and modern web technologies.
+            B.Tech CSE graduate building full-stack web applications. Currently working on real-world projects and open to opportunities.
           </p>
 
           <div
