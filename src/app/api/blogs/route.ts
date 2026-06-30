@@ -21,7 +21,8 @@ const updateBlogPostSchema = createBlogPostSchema.partial();
 // GET /api/blogs - Get published blog posts for public consumption
 export async function GET() {
   try {
-    const blogs = await blogPostsDb.getPublished();
+    const allBlogs = await blogPostsDb.getAll();
+    const blogs = allBlogs.filter((blog) => blog.published);
     return NextResponse.json({ success: true, blogs });
   } catch (error) {
     console.error('Get blogs error:', error);
