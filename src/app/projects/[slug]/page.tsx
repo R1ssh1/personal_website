@@ -21,15 +21,44 @@ interface ProjectData {
 }
 
 async function fetchProject(slug: string): Promise<ProjectData | null> {
+    const mdxProject = getProjectBySlug(slug)
+    if (mdxProject) {
+        return {
+            title: mdxProject.metadata.title,
+            summary: mdxProject.metadata.summary,
+            description: mdxProject.metadata.summary,
+            content: mdxProject.content,
+            technologies: mdxProject.metadata.technologies || [],
+            date: mdxProject.metadata.date,
+            featured: mdxProject.metadata.featured,
+            githubUrl: mdxProject.metadata.github,
+            demoUrl: mdxProject.metadata.demo,
+            imageUrl: mdxProject.metadata.image,
+            type: 'mdx',
+        }
+    }
+
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/projects/${slug}`)
-        if (response.ok) {
-            const data = await response.json()
-            return data.success ? data.project : null
+        const dbProjects = await projectsDb.getAll()
+        const dbProject = dbProjects.find((project) => getProjectSlugFromTitle(project.title) === slug)
+        if (dbProject) {
+            return {
+                title: dbProject.title,
+                summary: dbProject.description,
+                description: dbProject.description,
+                content: dbProject.description,
+                technologies: dbProject.techStack,
+                date: dbProject.createdAt,
+                githubUrl: dbProject.githubLink,
+                demoUrl: dbProject.liveDemoLink,
+                imageUrl: dbProject.images?.[0],
+                type: 'database',
+            }
         }
     } catch (error) {
-        console.error('Error fetching project:', error)
+        console.error('Error fetching project from database:', error)
     }
+
     return null
 }
 
