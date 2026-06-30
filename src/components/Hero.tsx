@@ -3,6 +3,8 @@
 import { motion, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion'
 import Link from 'next/link'
 import { useState, useRef } from 'react'
+import { ShinyText } from '@/components/reactbits/ShinyText'
+import { StarBorder } from '@/components/reactbits/StarBorder'
 
 export function Hero() {
   const [emailCopied, setEmailCopied] = useState(false)
@@ -78,255 +80,72 @@ export function Hero() {
   return (
     <motion.section
       ref={ref}
-      className="min-h-screen flex items-center justify-center px-4 pt-20 relative overflow-hidden"
+      className="min-h-screen flex items-center justify-center px-4 pt-20 pb-32 relative"
     >
-      {/* Background elements */}
-      <div className="absolute inset-0 -z-10">
-        <motion.div
-          className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-accent/10 to-purple-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.6, 0.3],
-            x: [0, 20, 0],
-            y: [0, -10, 0]
-          }}
-          transition={{
-            duration: 8,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-
-        <motion.div
-          className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.1, 1],
-            opacity: [0.2, 0.5, 0.2],
-            x: [0, -15, 0],
-            y: [0, 15, 0]
-          }}
-          transition={{
-            duration: 10,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2
-          }}
-        />
-
-        {[...Array(6)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-2 h-2 bg-accent/20 rounded-full blur-sm"
-            style={{
-              left: `${20 + i * 15}%`,
-              top: `${30 + (i % 2) * 40}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              x: [0, 10, 0],
-              opacity: [0.2, 0.6, 0.2],
-            }}
-            transition={{
-              duration: 4 + i * 0.5,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: i * 0.2,
-            }}
-          />
-        ))}
-
-        <motion.div
-          className="absolute inset-0 bg-gradient-conic from-accent/5 via-transparent to-purple-500/5"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-        />
-      </div>
-
-      <motion.div
-        className="max-w-4xl mx-auto text-center"
-        style={{ y, opacity }}
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.h1
-            className="text-5xl md:text-7xl font-bold text-text mb-6 leading-tight cursor-default relative"
-            initial={{ opacity: 0, y: 30, rotateX: 20 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-            transition={{ duration: 1, delay: 0.1, ease: "easeOut" }}
-            whileHover={{ scale: 1.02 }}
+      <div className="max-w-4xl mx-auto text-center">
+        <div>
+          <h1
+            className="font-bold text-text leading-relaxed cursor-default relative pt-12 pb-12 mb-8 overflow-visible min-h-[120px] md:min-h-[140px]"
           >
-            <motion.span
-              initial={{ opacity: 0.8 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
+            <span className="text-3xl md:text-5xl">
               Hi, I&apos;m{' '}
-            </motion.span>
+            </span>
             <motion.span
-              className="text-accent inline-block relative"
-              initial={{ opacity: 0, scale: 0.8, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{
-                duration: 0.8,
-                delay: 0.5,
-                type: "spring",
-                stiffness: 200,
-                damping: 20
-              }}
+              className="inline-block text-accent relative min-h-[80px] md:min-h-[100px]"
               whileHover={{
                 scale: 1.05,
-                textShadow: "0 0 30px rgba(59, 130, 246, 0.6)",
                 y: -2
               }}
             >
-              <motion.span
-                className="absolute inset-0 text-accent blur-sm opacity-50"
-                animate={{
-                  opacity: [0.3, 0.6, 0.3]
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                Rishi Jha
-              </motion.span>
-              <span className="relative z-10">Rishi Jha</span>
+              <ShinyText
+                text="Rishi Jha"
+                className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-gray-100 to-gray-500 bg-clip-text text-transparent font-logo whitespace-nowrap"
+                speed={4}
+              />
             </motion.span>
-          </motion.h1>
+          </h1>
 
-          <motion.div
-            className="relative h-1 mx-auto mb-8 rounded-full overflow-hidden"
-            initial={{ width: 0 }}
-            animate={{ width: 160 }}
-            transition={{ duration: 1.5, delay: 0.8, ease: "easeOut" }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-accent via-purple-500 to-pink-500" />
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-white/50 via-white/80 to-white/50"
-              animate={{ x: ['-100%', '100%'] }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 2
-              }}
-            />
-          </motion.div>
-
-          <motion.p
+          <p
             className="text-xl md:text-2xl text-muted mb-8 font-medium"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            whileHover={{ scale: 1.02 }}
           >
-            Computer Science Student & Software Developer
-          </motion.p>
+            Software Developer & CSE Graduate
+          </p>
 
-          <motion.p
+          <p
             className="text-lg text-muted mb-12 max-w-2xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            whileHover={{ scale: 1.01 }}
           >
             Passionate about building innovative solutions and exploring the latest technologies.
-            Currently in my 4th year of Computer Science, with a focus on full-stack development
-            and modern web technologies.
-          </motion.p>
+            B.Tech CSE graduate building full-stack web applications. Currently working on real-world projects and open to opportunities.
+          </p>
 
-          <motion.div
+          <div
             className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
           >
             <motion.div
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               className="relative group"
             >
-              <Link
-                href="/projects"
-                className="group relative inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-accent via-blue-600 to-purple-600 text-white rounded-xl transition-all duration-500 font-semibold shadow-xl hover:shadow-accent/40 overflow-hidden transform-gpu"
-              >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-accent opacity-0 group-hover:opacity-100"
-                  initial={{ scale: 1.5, opacity: 0 }}
-                  whileHover={{
-                    scale: 1,
-                    opacity: 1,
-                    transition: {
-                      duration: 0.6,
-                      ease: "easeOut"
-                    }
-                  }}
-                />
-
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full"
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                />
-
-                <div className="absolute -inset-0.5 bg-gradient-to-r from-accent via-purple-600 to-blue-600 rounded-xl blur opacity-30 group-hover:opacity-70 transition-opacity duration-500" />
-
-                <span className="relative z-10 flex items-center justify-center gap-3 text-center">
-                  <motion.span
-                    className="font-semibold tracking-wide"
-                  >
-                    View My Projects
-                  </motion.span>
-                  <motion.span
-                    animate={{
-                      x: [0, 4, 0],
-                      rotate: [0, 5, 0]
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: 0.5
-                    }}
-                    whileHover={{
-                      x: 6,
-                      rotate: 15,
-                      scale: 1.1
-                    }}
-                    className="inline-flex items-center justify-center"
-                  >
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="flex-shrink-0 drop-shadow-sm"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </motion.span>
-                </span>
-              </Link>
+              <StarBorder color="rgba(121, 173, 255, 1)">
+                <Link
+                  href="/projects"
+                  className="group relative inline-flex items-center justify-center px-8 py-4 bg-accent/10 text-white border border-white/20 rounded-xl hover:bg-accent/20 transition-all duration-150 font-semibold backdrop-blur-[2px]"
+                >
+                  View My Projects
+                </Link>
+              </StarBorder>
             </motion.div>
 
             <motion.div
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               className="relative group"
             >
               <Link
                 href="/about"
-                className="group relative inline-flex items-center justify-center px-8 py-4 glass-morphism text-text hover:text-white border border-secondary/30 hover:border-accent/50 rounded-xl transition-all duration-500 font-semibold backdrop-blur-sm overflow-hidden transform-gpu"
+                className="group relative inline-flex items-center justify-center mb-2 px-8 py-4 glass-morphism text-text hover:text-white border border-secondary/30 hover:border-accent/50 rounded-xl transition-all duration-150 font-semibold backdrop-blur-sm overflow-hidden transform-gpu"
               >
                 <motion.div
                   className="absolute inset-0 bg-gradient-to-r from-accent/80 to-purple-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -356,30 +175,18 @@ export function Hero() {
                 </span>
               </Link>
             </motion.div>
-          </motion.div>
+          </div>
 
           {/* Social icons with magnetic attraction and velocity-based rotation */}
-          <motion.div
+          <div
             className="flex justify-center space-x-8"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.15,
-                  delayChildren: 0.6
-                }
-              }
-            }}
           >
             {/* GitHub Icon */}
             <motion.a
               href="https://github.com/R1ssh1"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-accent transition-all duration-500 rounded-xl border border-secondary/20 hover:border-accent/40 backdrop-blur-sm overflow-hidden cursor-pointer"
+              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-accent transition-all duration-150 rounded-xl border border-secondary/20 hover:border-purple-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
               aria-label="GitHub"
               variants={{
                 hidden: { opacity: 0, y: 20, scale: 0.8, rotateX: -45 },
@@ -387,20 +194,14 @@ export function Hero() {
               }}
               whileHover={{
                 scale: 1.15,
-                y: -4,
-                boxShadow: "0 15px 35px rgba(0,0,0,0.15)"
+                y: -4
               }}
               whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               onMouseMove={(e) => handleMouseMove(e, githubX, githubY, githubRotation)}
               onMouseLeave={() => handleMouseLeave(githubX, githubY, githubRotation)}
               style={{ x: githubX, y: githubY }}
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-accent/30 to-purple-600/30 rounded-xl opacity-0 group-hover:opacity-100"
-                transition={{ duration: 0.4 }}
-              />
-
               <motion.svg
                 className="relative z-10 w-7 h-7"
                 fill="currentColor"
@@ -416,7 +217,7 @@ export function Hero() {
               href="https://www.linkedin.com/in/rishi-jha-85b52b250/"
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-blue-500 transition-all duration-500 rounded-xl border border-secondary/20 hover:border-blue-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
+              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-blue-500 transition-all duration-150 rounded-xl border border-secondary/20 hover:border-blue-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
               aria-label="LinkedIn"
               variants={{
                 hidden: { opacity: 0, y: 20, scale: 0.8, rotateX: -45 },
@@ -424,20 +225,14 @@ export function Hero() {
               }}
               whileHover={{
                 scale: 1.15,
-                y: -4,
-                boxShadow: "0 15px 35px rgba(59, 130, 246, 0.2)"
+                y: -4
               }}
               whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               onMouseMove={(e) => handleMouseMove(e, linkedinX, linkedinY, linkedinRotation)}
               onMouseLeave={() => handleMouseLeave(linkedinX, linkedinY, linkedinRotation)}
               style={{ x: linkedinX, y: linkedinY }}
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-blue-500/30 to-blue-600/30 rounded-xl opacity-0 group-hover:opacity-100"
-                transition={{ duration: 0.4 }}
-              />
-
               <motion.svg
                 className="relative z-10 w-7 h-7"
                 fill="currentColor"
@@ -450,7 +245,7 @@ export function Hero() {
 
             {/* Email Icon */}
             <motion.button
-              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-green-500 transition-all duration-500 rounded-xl border border-secondary/20 hover:border-green-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
+              className="group relative p-4 glass-morphism hover:glass-morphism-hover text-muted hover:text-green-500 transition-all duration-150 rounded-xl border border-secondary/20 hover:border-green-500/40 backdrop-blur-sm overflow-hidden cursor-pointer"
               aria-label="Copy email to clipboard"
               variants={{
                 hidden: { opacity: 0, y: 20, scale: 0.8, rotateX: -45 },
@@ -458,11 +253,10 @@ export function Hero() {
               }}
               whileHover={{
                 scale: 1.15,
-                y: -4,
-                boxShadow: "0 15px 35px rgba(34, 197, 94, 0.2)"
+                y: -4
               }}
               whileTap={{ scale: 0.9 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
               onMouseMove={(e) => handleMouseMove(e, emailX, emailY, emailRotation)}
               onMouseLeave={() => handleMouseLeave(emailX, emailY, emailRotation)}
               style={{ x: emailX, y: emailY }}
@@ -489,11 +283,6 @@ export function Hero() {
                 }
               }}
             >
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-br from-green-500/30 to-emerald-500/30 rounded-xl opacity-0 group-hover:opacity-100"
-                transition={{ duration: 0.4 }}
-              />
-
               <motion.svg
                 className="relative z-10 w-7 h-7"
                 fill="none"
@@ -504,7 +293,7 @@ export function Hero() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </motion.svg>
             </motion.button>
-          </motion.div>
+          </div>
 
           {/* Email copied notification */}
           {emailCopied && (
@@ -541,8 +330,8 @@ export function Hero() {
               </motion.div>
             </motion.div>
           )}
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </motion.section>
   )
 }

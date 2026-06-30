@@ -3,7 +3,7 @@ import { getAllBlogPosts, getBlogPostBySlug } from '@/lib/mdx'
 import { MDXContent } from '@/components/MDXContent'
 import Link from 'next/link'
 import { getBlogSlugFromTitle } from '@/lib/slug'
-import { blogPostsDb } from '@/lib/database'
+import { blogPostsDb } from '@/lib/database-unified'
 
 // Extended blog post type to handle both MDX and database content
 interface BlogPostData {
@@ -18,22 +18,43 @@ interface BlogPostData {
 }
 
 async function fetchBlogPost(slug: string): Promise<BlogPostData | null> {
+    const mdxPost = getBlogPostBySlug(slug)
+    if (mdxPost) {
+        return {
+            title: mdxPost.metadata.title,
+            summary: mdxPost.metadata.summary,
+            content: mdxPost.content,
+            date: mdxPost.metadata.date,
+            tags: mdxPost.metadata.tags || [],
+            readTime: mdxPost.metadata.readTime,
+            featured: mdxPost.metadata.featured,
+            type: 'mdx',
+        }
+    }
+
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blogs/${slug}`)
-        if (response.ok) {
-            const data = await response.json()
-            return data.success ? data.blog : null
+        const dbPosts = await blogPostsDb.getAll()
+        const dbPost = dbPosts.find((post) => getBlogSlugFromTitle(post.title) === slug)
+        if (dbPost) {
+            return {
+                title: dbPost.title,
+                summary: dbPost.excerpt,
+                content: dbPost.content,
+                date: dbPost.publishDate,
+                tags: dbPost.tags,
+                type: 'database',
+            }
         }
     } catch (error) {
-        console.error('Error fetching blog post:', error)
+        console.error('Error fetching blog post from database:', error)
     }
+
     return null
 }
-
 export async function generateStaticParams() {
     // Get both MDX and database blog posts
     const mdxPosts = getAllBlogPosts()
-    const dbPosts = blogPostsDb.getAll()
+    const dbPosts = await blogPostsDb.getAll()
 
     const mdxSlugs = mdxPosts.map((post) => ({ slug: post.slug }))
     const dbSlugs = dbPosts.map((post) => ({ slug: getBlogSlugFromTitle(post.title) }))

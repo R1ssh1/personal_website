@@ -2,7 +2,6 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useTheme } from 'next-themes'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -18,7 +17,6 @@ const navItems = [
 
 export function Navigation() {
   const pathname = usePathname()
-  const { theme, setTheme } = useTheme()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
 
@@ -26,10 +24,6 @@ export function Navigation() {
   useEffect(() => {
     setMounted(true)
   }, [])
-
-  const toggleTheme = () => {
-    setTheme(theme === 'light' ? 'dark' : 'light')
-  }
 
   // Hide navigation only on admin dashboard pages
   if (pathname.startsWith('/admin/dashboard')) {
@@ -69,7 +63,7 @@ export function Navigation() {
       <motion.nav
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="fixed top-4 left-0 right-0 z-50 hidden md:block"
+        className="fixed top-4 left-0 right-0 z-50 hidden md:block transition-opacity duration-150"
       >
         <div className="flex justify-center">
           <div className="glass-morphism rounded-full px-8 py-4">
@@ -77,7 +71,7 @@ export function Navigation() {
               {/* Logo */}
               <Link
                 href="/"
-                className="font-logo text-xl font-semibold text-text hover:text-accent transition-colors duration-300"
+                className="font-logo text-xl font-semibold text-text hover:text-sky-400 transition-colors duration-150"
               >
                 Rishi Jha
               </Link>
@@ -88,9 +82,9 @@ export function Navigation() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`relative font-nav text-sm font-medium transition-colors duration-300 group ${pathname === item.href
-                      ? 'text-accent'
-                      : 'text-muted hover:text-text'
+                    className={`relative font-nav text-sm font-medium transition-colors duration-150 group ${pathname === item.href
+                      ? 'text-sky-400'
+                      : 'text-muted hover:text-sky-400'
                       }`}
                   >
                     {item.label}
@@ -98,89 +92,41 @@ export function Navigation() {
                     {pathname === item.href && (
                       <motion.div
                         layoutId="activeNav"
-                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full"
-                        transition={{ duration: 0.3 }}
+                        className="absolute -bottom-1 left-0 right-0 h-0.5 bg-sky-400 rounded-full"
+                        transition={{ duration: 0.15 }}
                       />
                     )}
-                    {/* Hover indicator */}
-                    <div className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full scale-x-0 group-hover:scale-x-100 transition-transform duration-300" />
                   </Link>
                 ))}
               </div>
-
-              {/* Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-full text-muted hover:text-text transition-colors duration-300 hover:bg-secondary/50"
-                aria-label="Toggle theme"
-              >
-                <motion.div
-                  initial={false}
-                  animate={{ rotate: theme === 'dark' ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {theme === 'light' ? (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586z" />
-                    </svg>
-                  )}
-                </motion.div>
-              </button>
             </div>
           </div>
         </div>
       </motion.nav>
 
       {/* Mobile Navigation */}
-      <nav className="fixed top-4 left-4 right-4 z-50 md:hidden">
+      <nav className="fixed top-4 left-4 right-4 z-50 md:hidden transition-opacity duration-150">
         <div className="glass-morphism rounded-full px-6 py-4">
           <div className="flex items-center justify-between">
             {/* Mobile Logo */}
             <Link
               href="/"
-              className="font-logo text-lg font-semibold text-text hover:text-accent transition-colors duration-300"
+              className="font-logo text-lg font-semibold text-text hover:text-sky-400 transition-colors duration-150"
             >
               Rishi Jha
             </Link>
 
             <div className="flex items-center space-x-4">
-              {/* Mobile Theme Toggle */}
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-full text-muted hover:text-text transition-colors duration-300 hover:bg-secondary/50"
-                aria-label="Toggle theme"
-              >
-                <motion.div
-                  initial={false}
-                  animate={{ rotate: theme === 'dark' ? 180 : 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {theme === 'light' ? (
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.464 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
-                    </svg>
-                  ) : (
-                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M17.293 13.293A8 8 0 0 1 6.707 2.707a8.001 8.001 0 1 0 10.586 10.586z" />
-                    </svg>
-                  )}
-                </motion.div>
-              </button>
-
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-full text-muted hover:text-text transition-colors duration-300 hover:bg-secondary/50"
+                className="p-2 rounded-full text-muted hover:text-text transition-colors duration-150 hover:bg-secondary/50"
                 aria-label="Toggle menu"
               >
                 <motion.div
                   initial={false}
                   animate={{ rotate: mobileMenuOpen ? 90 : 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.15 }}
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -208,9 +154,9 @@ export function Navigation() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
-                      className={`font-nav text-sm font-medium transition-colors duration-300 ${pathname === item.href
-                        ? 'text-accent'
-                        : 'text-muted hover:text-text'
+                      className={`font-nav text-sm font-medium transition-colors duration-150 ${pathname === item.href
+                        ? 'text-sky-400'
+                        : 'text-muted hover:text-sky-400'
                         }`}
                     >
                       {item.label}

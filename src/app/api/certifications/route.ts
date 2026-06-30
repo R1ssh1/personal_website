@@ -4,7 +4,7 @@ import { certificationsDb } from '@/lib/database-unified'
 // GET /api/certifications - Get all certifications (public)
 export async function GET() {
   try {
-    const certifications = certificationsDb.getAll()
+    const certifications = await certificationsDb.getAll()
     return NextResponse.json(certifications)
   } catch (error) {
     console.error('Error fetching certifications:', error)

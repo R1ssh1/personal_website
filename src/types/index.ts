@@ -53,3 +53,20 @@ export interface AdminSession {
   expiresAt: string
   createdAt: string
 }
+
+export interface AboutContent {
+  id: string
+  content: string // HTML content from WYSIWYG editor
+  updatedAt: string
+  updatedBy?: string
+}
+
+export interface ContactFormSubmission {
+  id: string
+  name: string
+  organisation?: string
+  contactInfo: string // email, phone, or social handle
+  message: string
+  createdAt: string
+  read: boolean
+}

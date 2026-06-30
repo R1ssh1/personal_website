@@ -5,18 +5,20 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { BlogPost, Project, Certification } from '@/types'
 import UnifiedContentForm from '@/components/UnifiedContentForm'
+import RichTextEditor from '@/components/RichTextEditor'
 import { useAuth } from '@/hooks/useAuth'
 
 interface Tab {
   id: string
   label: string
-  icon: string
 }
 
 const tabs: Tab[] = [
-  { id: 'certifications', label: 'Certifications', icon: '🏆' },
-  { id: 'blogs', label: 'Blog Posts', icon: '📝' },
-  { id: 'projects', label: 'Projects', icon: '🚀' }
+  { id: 'certifications', label: 'Certifications' },
+  { id: 'blogs', label: 'Blog Posts' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'about', label: 'About Page' },
+  { id: 'contact', label: 'Contact Messages' }
 ]
 
 export default function AdminDashboard() {
@@ -102,7 +104,6 @@ export default function AdminDashboard() {
                   : 'text-white/70 hover:text-white hover:bg-white/5'
                   }`}
               >
-                <span>{tab.icon}</span>
                 <span className="font-medium">{tab.label}</span>
               </button>
             ))}
@@ -114,12 +115,14 @@ export default function AdminDashboard() {
           key={activeTab}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.15 }}
           className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6"
         >
           {activeTab === 'certifications' && <CertificationsManager />}
           {activeTab === 'blogs' && <BlogsManager />}
           {activeTab === 'projects' && <ProjectsManager />}
+          {activeTab === 'about' && <AboutManager />}
+          {activeTab === 'contact' && <ContactMessagesManager />}
         </motion.div>
       </div>
     </div>
@@ -859,6 +862,276 @@ function ProjectsManager() {
           ))
         )}
       </div>
+    </div>
+  )
+}
+
+// About Page Manager Component
+function AboutManager() {
+  const [content, setContent] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
+  const [lastSaved, setLastSaved] = useState<Date | null>(null)
+
+  useEffect(() => {
+    fetchAboutContent()
+  }, [])
+
+  const fetchAboutContent = async () => {
+    try {
+      const response = await fetch('/api/admin/about', { credentials: 'include' })
+      if (response.ok) {
+        const data = await response.json()
+        setContent(data.content || '')
+      }
+    } catch (error) {
+      console.error('Failed to fetch about content:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleSave = async () => {
+    setIsSaving(true)
+    try {
+      const response = await fetch('/api/admin/about', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({ content }),
+      })
+
+      if (response.ok) {
+        setLastSaved(new Date())
+      } else {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to save')
+      }
+    } catch (error) {
+      console.error('Save about content error:', error)
+      alert('Failed to save about content. Please try again.')
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="bg-white/5 rounded-xl p-8 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+        <p className="text-white/70">Loading about content...</p>
+      </div>
+    )
+  }
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Edit About Page</h2>
+          {lastSaved && (
+            <p className="text-sm text-white/50 mt-1">
+              Last saved: {lastSaved.toLocaleTimeString()}
+            </p>
+          )}
+        </div>
+        <button
+          onClick={handleSave}
+          disabled={isSaving}
+          className="px-6 py-2 bg-green-500/20 border border-green-500/30 rounded-lg text-white hover:bg-green-500/30 transition-colors disabled:opacity-50"
+        >
+          {isSaving ? 'Saving...' : 'Save Changes'}
+        </button>
+      </div>
+
+      <div className="bg-white/5 rounded-xl p-4 border border-white/10">
+        <RichTextEditor
+          value={content}
+          onChange={setContent}
+          placeholder="Write your about page content here..."
+          height={500}
+        />
+      </div>
+
+      <p className="text-white/50 text-sm mt-4">
+        Use the rich text editor above to format your About page content.
+        Changes will be reflected on the public About page after saving.
+      </p>
+    </div>
+  )
+}
+
+// Contact Messages Manager Component
+function ContactMessagesManager() {
+  const [messages, setMessages] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [selectedMessage, setSelectedMessage] = useState<any | null>(null)
+
+  useEffect(() => {
+    fetchMessages()
+  }, [])
+
+  const fetchMessages = async () => {
+    try {
+      const response = await fetch('/api/admin/contact', { credentials: 'include' })
+      if (response.ok) {
+        const data = await response.json()
+        setMessages(data.submissions || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch messages:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleMarkAsRead = async (id: string) => {
+    try {
+      const response = await fetch(`/api/admin/contact/${id}/read`, {
+        method: 'POST',
+        credentials: 'include',
+      })
+      if (response.ok) {
+        setMessages(messages.map(m => m.id === id ? { ...m, read: true } : m))
+      }
+    } catch (error) {
+      console.error('Failed to mark as read:', error)
+    }
+  }
+
+  const handleDelete = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this message?')) return
+
+    try {
+      const response = await fetch(`/api/admin/contact/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      })
+      if (response.ok) {
+        setMessages(messages.filter(m => m.id !== id))
+        if (selectedMessage?.id === id) {
+          setSelectedMessage(null)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to delete message:', error)
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="bg-white/5 rounded-xl p-8 text-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+        <p className="text-white/70">Loading messages...</p>
+      </div>
+    )
+  }
+
+  const unreadCount = messages.filter(m => !m.read).length
+
+  return (
+    <div>
+      <div className="flex justify-between items-center mb-6">
+        <div>
+          <h2 className="text-2xl font-bold text-white">Contact Messages</h2>
+          {unreadCount > 0 && (
+            <p className="text-sm text-blue-400 mt-1">
+              {unreadCount} unread message{unreadCount !== 1 ? 's' : ''}
+            </p>
+          )}
+        </div>
+      </div>
+
+      {messages.length === 0 ? (
+        <div className="bg-white/5 rounded-xl p-8 text-center">
+          <p className="text-white/70">No contact messages yet.</p>
+          <p className="text-white/50 text-sm mt-2">Messages from the contact form will appear here.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Message List */}
+          <div className="space-y-3 max-h-[600px] overflow-y-auto pr-2">
+            {messages.map((message) => (
+              <motion.div
+                key={message.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                onClick={() => {
+                  setSelectedMessage(message)
+                  if (!message.read) handleMarkAsRead(message.id)
+                }}
+                className={`p-4 rounded-xl border cursor-pointer transition-all ${selectedMessage?.id === message.id
+                  ? 'bg-white/10 border-blue-500/50'
+                  : message.read
+                    ? 'bg-white/5 border-white/10 hover:bg-white/10'
+                    : 'bg-blue-500/10 border-blue-500/30 hover:bg-blue-500/20'
+                  }`}
+              >
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h4 className="font-medium text-white">{message.name}</h4>
+                    {message.organisation && (
+                      <p className="text-sm text-white/50">{message.organisation}</p>
+                    )}
+                  </div>
+                  {!message.read && (
+                    <span className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded-full">
+                      New
+                    </span>
+                  )}
+                </div>
+                <p className="text-white/70 text-sm line-clamp-2">{message.message}</p>
+                <p className="text-white/40 text-xs mt-2">
+                  {new Date(message.createdAt).toLocaleDateString()} at{' '}
+                  {new Date(message.createdAt).toLocaleTimeString()}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Message Detail */}
+          {selectedMessage ? (
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-xl font-semibold text-white">{selectedMessage.name}</h3>
+                  {selectedMessage.organisation && (
+                    <p className="text-white/50">{selectedMessage.organisation}</p>
+                  )}
+                </div>
+                <button
+                  onClick={() => handleDelete(selectedMessage.id)}
+                  className="px-3 py-1 bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 hover:bg-red-500/30 transition-colors text-sm"
+                >
+                  Delete
+                </button>
+              </div>
+
+              <div className="mb-4">
+                <p className="text-sm text-white/50 mb-1">Contact Info:</p>
+                <p className="text-white">{selectedMessage.contactInfo}</p>
+              </div>
+
+              <div className="mb-4">
+                <p className="text-sm text-white/50 mb-1">Message:</p>
+                <p className="text-white whitespace-pre-wrap">{selectedMessage.message}</p>
+              </div>
+
+              <div className="pt-4 border-t border-white/10">
+                <p className="text-white/40 text-sm">
+                  Received: {new Date(selectedMessage.createdAt).toLocaleString()}
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="bg-white/5 rounded-xl p-6 border border-white/10 flex items-center justify-center">
+              <p className="text-white/50">Select a message to view details</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }

@@ -160,7 +160,7 @@ export default function DataVisualizationTool() {
                     className="flex flex-col items-center flex-1"
                     initial={{ height: 0 }}
                     animate={{ height: 'auto' }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    transition={{ duration: 0.25, delay: index * 0.1 }}
                   >
                     <div
                       className="bg-accent hover:bg-accent/80 transition-colors rounded-t w-full flex items-end justify-center relative group cursor-pointer"
@@ -234,7 +234,7 @@ export default function DataVisualizationTool() {
                       fill="rgb(var(--color-accent))"
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
-                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      transition={{ duration: 0.15, delay: index * 0.1 }}
                       className="cursor-pointer"
                     >
                       <title>{`${row[chartConfig.xAxis]}: ${row[chartConfig.yAxis]}`}</title>
@@ -295,7 +295,7 @@ export default function DataVisualizationTool() {
                         strokeWidth="2"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        transition={{ duration: 0.25, delay: index * 0.1 }}
                         className="cursor-pointer hover:opacity-80"
                       >
                         <title>{`${row[chartConfig.xAxis]}: ${value} (${((value / total) * 100).toFixed(1)}%)`}</title>

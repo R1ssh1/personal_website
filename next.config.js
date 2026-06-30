@@ -4,6 +4,7 @@ const nextConfig = {
     mdxRs: true,
   },
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  allowedDevOrigins: ['172.17.224.1'],
   images: {
     remotePatterns: [
       {

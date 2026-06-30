@@ -4,8 +4,8 @@ import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/components/ThemeProvider'
 import { Navigation } from '@/components/Navigation'
-import MouseGradient from '@/components/MouseGradient'
-import StarryBackground from '@/components/StarryBackground'
+import { Beams } from '@/components/reactbits/Beams'
+// Beams component removed - will be reimplemented with proper TS+Tailwind
 
 const inter = Inter({
   subsets: ['latin'],
@@ -25,11 +25,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`dark ${inter.variable} ${playfair.variable}`}>
       <body className="font-nav">
         <ThemeProvider>
-          <StarryBackground />
-          <MouseGradient />
+          {/* Add Beams background */}
+          <div className="fixed inset-0 -z-10">
+            <Beams />
+          </div>
           <Navigation />
           <main className="relative z-10">
             {children}

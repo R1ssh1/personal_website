@@ -7,13 +7,13 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   return (
     <NextThemesProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="dark"
       enableSystem={false}
       themes={['light', 'dark']}
       disableTransitionOnChange={false}
       {...props}
     >
-      <div className="starry-bg bg-primary text-text min-h-screen transition-colors duration-300">
+      <div className="bg-primary text-text min-h-screen transition-colors duration-300">
         {children}
       </div>
     </NextThemesProvider>

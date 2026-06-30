@@ -14,7 +14,7 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const blogs = blogPostsDb.getAll();
+    const blogs = await blogPostsDb.getAll();
     return NextResponse.json({ success: true, blogs });
   } catch (error) {
     console.error('Get admin blogs error:', error);
