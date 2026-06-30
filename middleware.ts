@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { adminSessionsDb, adminUsersDb } from '@/lib/database-unified'
-
+export const runtime = 'nodejs'
 export async function middleware(request: NextRequest) {
   // Only apply middleware to admin dashboard routes
   if (request.nextUrl.pathname.startsWith('/admin/dashboard')) {
