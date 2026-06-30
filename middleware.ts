@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { adminSessionsDb, adminUsersDb } from '@/lib/database-unified'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // Only apply middleware to admin dashboard routes
   if (request.nextUrl.pathname.startsWith('/admin/dashboard')) {
     const sessionId = request.cookies.get('admin_session')?.value
@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
     }
 
     // Check if session exists and is not expired
-    const session = adminSessionsDb.getById(sessionId)
+    const session = await adminSessionsDb.getById(sessionId)
     if (!session || new Date(session.expiresAt) < new Date()) {
       // Clean up expired session
       if (session) {
@@ -28,7 +28,7 @@ export function middleware(request: NextRequest) {
     }
 
     // Check if the user still exists and is an admin
-    const user = adminUsersDb.getById(session.userId)
+    const user = await adminUsersDb.getById(session.userId)
     if (!user || !user.isAdmin) {
       // Clean up invalid session
       adminSessionsDb.delete(sessionId)
