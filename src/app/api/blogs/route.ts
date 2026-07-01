@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { blogPostsDb } from '@/lib/database';
+import { blogPostsDb } from '@/lib/database-unified';
 import { getSession } from '@/lib/auth';
 import { z } from 'zod';
 
@@ -21,7 +21,8 @@ const updateBlogPostSchema = createBlogPostSchema.partial();
 // GET /api/blogs - Get published blog posts for public consumption
 export async function GET() {
   try {
-    const blogs = blogPostsDb.getPublished();
+    const allBlogs = await blogPostsDb.getAll();
+    const blogs = allBlogs.filter((blog) => blog.published);
     return NextResponse.json({ success: true, blogs });
   } catch (error) {
     console.error('Get blogs error:', error);
@@ -59,7 +60,7 @@ export async function POST(request: NextRequest) {
     }
 
     const blogData = validationResult.data;
-    const blogId = blogPostsDb.create({
+    const blogId = await blogPostsDb.create({
       title: blogData.title,
       excerpt: blogData.excerpt,
       content: blogData.content,
@@ -69,7 +70,7 @@ export async function POST(request: NextRequest) {
       published: blogData.published,
     });
 
-    const blog = blogPostsDb.getById(blogId);
+    const blog = await blogPostsDb.getById(blogId);
 
     return NextResponse.json({ success: true, blog }, { status: 201 });
   } catch (error) {

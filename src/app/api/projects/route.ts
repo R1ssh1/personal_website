@@ -54,7 +54,7 @@ export async function POST(request: NextRequest) {
     }
 
     const projectData = validationResult.data;
-    const projectId = projectsDb.create({
+    const projectId = await projectsDb.create({
       title: projectData.title,
       description: projectData.description,
       techStack: projectData.techStack,
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
       images: projectData.images,
     });
 
-    const project = projectsDb.getById(projectId);
+    const project = await projectsDb.getById(projectId);
 
     return NextResponse.json({ success: true, project }, { status: 201 });
   } catch (error) {

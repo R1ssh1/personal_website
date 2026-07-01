@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { blogPostsDb } from '@/lib/database';
+import { blogPostsDb } from '@/lib/database-unified';
 import { getSession } from '@/lib/auth';
 import { getBlogSlugFromTitle } from '@/lib/slug';
 import { getAllBlogPosts, getBlogPostBySlug } from '@/lib/mdx';
@@ -148,7 +148,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     // Check if blog exists
-    const existingBlog = blogPostsDb.getById(id);
+    const existingBlog = await blogPostsDb.getById(id);
     if (!existingBlog) {
       return NextResponse.json(
         { error: 'Blog post not found', success: false },
@@ -157,7 +157,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
     }
 
     const updateData = validationResult.data;
-    const success = blogPostsDb.update(id, updateData);
+    const success = await blogPostsDb.update(id, updateData);
 
     if (!success) {
       return NextResponse.json(
@@ -166,7 +166,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const updatedBlog = blogPostsDb.getById(id);
+    const updatedBlog = await blogPostsDb.getById(id);
     return NextResponse.json({ success: true, blog: updatedBlog });
   } catch (error) {
     console.error('Update blog error:', error);
@@ -192,7 +192,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
     const { id } = await params;
 
     // Check if blog exists
-    const existingBlog = blogPostsDb.getById(id);
+    const existingBlog = await blogPostsDb.getById(id);
     if (!existingBlog) {
       return NextResponse.json(
         { error: 'Blog post not found', success: false },
@@ -200,7 +200,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
       );
     }
 
-    const success = blogPostsDb.delete(id);
+    const success = await blogPostsDb.delete(id);
 
     if (!success) {
       return NextResponse.json(

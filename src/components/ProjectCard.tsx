@@ -37,7 +37,6 @@ export function ProjectCard({ project, tintColor }: ProjectCardProps) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
             whileHover={{ y: -5, scale: 1.02 }}
-            transition={{ duration: 0.15 }}
             className="group h-full"
         >
             <Link href={`/projects/${displayProject.slug}`}>

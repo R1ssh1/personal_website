@@ -19,9 +19,8 @@ export async function POST(request: NextRequest) {
         // Store the contact submission in the database
         const id = await contactSubmissionsDb.create({
             name: validatedData.name,
-            email: validatedData.email,
-            subject: validatedData.subject,
-            message: validatedData.message
+            contactInfo: validatedData.email,
+            message: `Subject: ${validatedData.subject}\n\n${validatedData.message}`
         })
 
         return NextResponse.json(
@@ -31,7 +30,7 @@ export async function POST(request: NextRequest) {
     } catch (error) {
         if (error instanceof z.ZodError) {
             return NextResponse.json(
-                { error: error.errors[0].message },
+                { error: error.issues[0].message },
                 { status: 400 }
             )
         }
