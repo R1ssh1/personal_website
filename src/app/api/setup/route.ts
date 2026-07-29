@@ -101,7 +101,7 @@ export async function POST() {
   } catch (error) {
     console.error('Setup error:', error)
     return NextResponse.json(
-      { error: 'Setup failed', details: error instanceof Error ? error.message : 'Unknown error' },
+      { error: 'Setup failed', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }
     )
   }
