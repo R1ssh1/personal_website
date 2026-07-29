@@ -91,13 +91,11 @@ export default function BlogForm({
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleInputChange = (field: keyof BlogFormData, value: any) => {
+  const handleInputChange = useCallback((field: keyof BlogFormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
+    setErrors(prev => (prev[field] ? { ...prev, [field]: '' } : prev));
+  }, []);
 
   const handleTagsChange = (value: string) => {
     setTagsInput(value);

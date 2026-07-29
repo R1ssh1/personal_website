@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface AuthStatus {
@@ -17,11 +17,7 @@ export function useAuth(requireAdmin = false) {
   })
   const router = useRouter()
 
-  useEffect(() => {
-    checkAuthStatus()
-  }, [])
-
-  const checkAuthStatus = async () => {
+  const checkAuthStatus = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/auth/status', {
         method: 'GET',
@@ -67,7 +63,11 @@ export function useAuth(requireAdmin = false) {
         router.push('/admin')
       }
     }
-  }
+  }, [requireAdmin, router])
+
+  useEffect(() => {
+    checkAuthStatus()
+  }, [checkAuthStatus])
 
   const refreshAuth = async () => {
     setAuthStatus(prev => ({ ...prev, loading: true }))

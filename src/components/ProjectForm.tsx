@@ -100,13 +100,11 @@ export default function ProjectForm({
     }
   };
 
-  const handleInputChange = (field: keyof ProjectFormData, value: any) => {
+  const handleInputChange = useCallback((field: keyof ProjectFormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
-    if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }));
-    }
-  };
+    setErrors(prev => (prev[field] ? { ...prev, [field]: '' } : prev));
+  }, []);
 
   const handleTechStackChange = (value: string) => {
     setTechStackInput(value);

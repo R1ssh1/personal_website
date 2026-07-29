@@ -54,7 +54,13 @@ async function fetchBlogPost(slug: string): Promise<BlogPostData | null> {
 export async function generateStaticParams() {
     // Get both MDX and database blog posts
     const mdxPosts = getAllBlogPosts()
-    const dbPosts = await blogPostsDb.getAll()
+    let dbPosts: { title: string }[] = []
+    
+    try {
+        dbPosts = await blogPostsDb.getAll()
+    } catch (error) {
+        console.error('Database connection failed during build in blog:', error)
+    }
 
     const mdxSlugs = mdxPosts.map((post) => ({ slug: post.slug }))
     const dbSlugs = dbPosts.map((post) => ({ slug: getBlogSlugFromTitle(post.title) }))
