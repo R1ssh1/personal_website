@@ -1,11 +1,7 @@
-'use client'
-
 import { Inter, Playfair_Display } from 'next/font/google'
 import './globals.css'
-import { ThemeProvider } from '@/components/ThemeProvider'
-import { Navigation } from '@/components/Navigation'
-import { Beams } from '@/components/reactbits/Beams'
-// Beams component removed - will be reimplemented with proper TS+Tailwind
+import { Providers } from '@/components/Providers'
+import { Metadata } from 'next'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -19,6 +15,17 @@ const playfair = Playfair_Display({
   display: 'swap',
 })
 
+export const metadata: Metadata = {
+  title: {
+    template: '%s | Rishi Jha',
+    default: 'Rishi Jha | Software Developer',
+  },
+  description: 'Software Developer & CSE Graduate building full-stack web applications.',
+  icons: {
+    icon: '/favicon.png',
+  },
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -27,16 +34,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`dark ${inter.variable} ${playfair.variable}`}>
       <body className="font-nav">
-        <ThemeProvider>
-          {/* Add Beams background */}
-          <div className="fixed inset-0 -z-10">
-            <Beams />
-          </div>
-          <Navigation />
-          <main className="relative z-10">
-            {children}
-          </main>
-        </ThemeProvider>
+        <Providers>
+          {children}
+        </Providers>
       </body>
     </html>
   )
