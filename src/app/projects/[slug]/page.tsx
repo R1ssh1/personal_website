@@ -65,7 +65,13 @@ async function fetchProject(slug: string): Promise<ProjectData | null> {
 export async function generateStaticParams() {
     // Get both MDX and database projects
     const mdxProjects = getAllProjects()
-    const dbProjects = await projectsDb.getAll()
+    let dbProjects: { title: string }[] = []
+    
+    try {
+        dbProjects = await projectsDb.getAll()
+    } catch (error) {
+        console.error('Database connection failed during build in projects:', error)
+    }
 
     const mdxSlugs = mdxProjects.map((project) => ({ slug: project.slug }))
     const dbSlugs = dbProjects.map((project) => ({ slug: getProjectSlugFromTitle(project.title) }))
