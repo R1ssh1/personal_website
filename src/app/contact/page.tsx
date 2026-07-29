@@ -7,7 +7,7 @@ export default function ContactPage() {
     const [emailCopied, setEmailCopied] = useState(false)
 
     const copyEmail = () => {
-        navigator.clipboard.writeText('rishijha2025@gmail.com')
+        navigator.clipboard.writeText('rishi.sk.j@gmail.com')
         setEmailCopied(true)
         setTimeout(() => setEmailCopied(false), 2000)
     }
@@ -47,7 +47,7 @@ export default function ContactPage() {
             ),
             title: 'Email',
             description: 'Send me a message',
-            value: 'rishijha2025@gmail.com',
+            value: 'rishi.sk.j@gmail.com',
             action: emailCopied ? 'Copied!' : 'Copy Email',
             onClick: copyEmail,
             tint: 'rgba(16, 185, 129, 0.15)'
