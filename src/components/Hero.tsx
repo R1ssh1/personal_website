@@ -175,6 +175,49 @@ export function Hero() {
                 </span>
               </Link>
             </motion.div>
+
+            <motion.div
+              whileHover={{ scale: 1.05, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 300, damping: 20, duration: 0.15 }}
+              className="relative group"
+            >
+              <a
+                href="/Resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative inline-flex items-center justify-center mb-2 px-8 py-4 glass-morphism text-text hover:text-white border border-secondary/30 hover:border-accent/50 rounded-xl transition-all duration-150 font-semibold backdrop-blur-sm overflow-hidden transform-gpu"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-accent/80 to-purple-600/80 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  initial={{ scale: 0.8 }}
+                  whileHover={{ scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                />
+
+                <span className="relative z-10 flex items-center justify-center gap-2 font-semibold tracking-wide">
+                  <motion.span
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    Download Resume
+                  </motion.span>
+                  <motion.span
+                    whileHover={{
+                      y: 2,
+                      scale: 1.1
+                    }}
+                    className="inline-flex items-center justify-center"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                  </motion.span>
+                </span>
+              </a>
+            </motion.div>
           </div>
 
           {/* Social icons with magnetic attraction and velocity-based rotation */}

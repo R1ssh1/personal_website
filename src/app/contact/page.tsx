@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import { useState } from 'react'
+import { ContactForm } from '@/components/ContactForm'
 
 export default function ContactPage() {
     const [emailCopied, setEmailCopied] = useState(false)
@@ -55,8 +56,8 @@ export default function ContactPage() {
     ]
 
     return (
-        <div className="min-h-screen pt-32 px-4">
-            <div className="max-w-4xl mx-auto">
+        <div className="min-h-screen pt-32 px-4 pb-20">
+            <div className="max-w-6xl mx-auto">
                 {/* Header */}
                 <motion.div
                     className="text-center mb-16"
@@ -73,9 +74,11 @@ export default function ContactPage() {
                     </p>
                 </motion.div>
 
-                {/* Contact Methods */}
-                <div className="space-y-6 mb-16">
-                    {contactMethods.map((method, index) => (
+                <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                    {/* Left Column: Contact Methods & Opportunities (35% approx) */}
+                    <div className="lg:col-span-4 space-y-6">
+                        <div className="space-y-6">
+                            {contactMethods.map((method, index) => (
                         <motion.div
                             key={method.title}
                             className="glass-morphism rounded-2xl p-6 border border-white/10 hover:border-white/20 transition-all duration-150"
@@ -131,10 +134,17 @@ export default function ContactPage() {
                         </motion.div>
                     ))}
                 </div>
+                    </div>
+
+                    {/* Right Column: Contact Form (65% approx) */}
+                    <div className="lg:col-span-8">
+                        <ContactForm />
+                    </div>
+                </div>
 
                 {/* Open to Opportunities */}
                 <motion.div
-                    className="glass-morphism rounded-2xl p-8 border border-white/10"
+                    className="glass-morphism rounded-2xl p-8 border border-white/10 mt-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}

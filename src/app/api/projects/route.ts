@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { projectsDb } from '@/lib/database-unified';
+import { getAllProjects } from '@/lib/mdx';
 import { getSession } from '@/lib/auth';
 import { z } from 'zod';
 
@@ -16,8 +17,30 @@ const createProjectSchema = z.object({
 // GET /api/projects - Get all projects
 export async function GET() {
   try {
-    const projects = await projectsDb.getAll();
-    return NextResponse.json({ success: true, projects });
+    const dbProjects = await projectsDb.getAll();
+    
+    // Fetch and map MDX projects
+    const mdxProjectsRaw = getAllProjects();
+    const mdxProjects = mdxProjectsRaw.map(mdx => ({
+      id: mdx.slug,
+      title: mdx.title,
+      description: mdx.summary,
+      techStack: mdx.technologies || [],
+      githubLink: mdx.github,
+      liveDemoLink: mdx.demo,
+      images: mdx.image ? [mdx.image] : [],
+      createdAt: mdx.date || new Date().toISOString(),
+      updatedAt: mdx.date || new Date().toISOString(),
+    }));
+
+    // Merge and sort by newest first
+    const allProjects = [...dbProjects, ...mdxProjects].sort((a, b) => {
+      const dateA = new Date(a.createdAt).getTime();
+      const dateB = new Date(b.createdAt).getTime();
+      return dateB - dateA;
+    });
+
+    return NextResponse.json({ success: true, projects: allProjects });
   } catch (error) {
     console.error('Get projects error:', error);
     return NextResponse.json(
