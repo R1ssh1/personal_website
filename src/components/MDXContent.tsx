@@ -42,7 +42,9 @@ const components = {
         <a className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 underline" {...props} />
     ),
     img: (props: any) => (
-        <img className="rounded-lg shadow-md my-4 max-w-full h-auto" {...props} />
+        <div className="relative w-full my-4">
+            <img className="rounded-lg shadow-md max-w-full h-auto" alt={props.alt || ''} {...props} />
+        </div>
     ),
     table: (props: any) => (
         <div className="overflow-x-auto my-4">
