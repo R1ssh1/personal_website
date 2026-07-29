@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { blogPostsDb } from '@/lib/database';
+import { blogPostsDb } from '@/lib/database-unified';
 import { getSession } from '@/lib/auth';
 
 // GET /api/admin/blogs - Get all blog posts (including drafts) for admin
