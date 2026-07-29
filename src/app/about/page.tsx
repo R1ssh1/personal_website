@@ -9,7 +9,12 @@ export const metadata = {
 
 export default async function AboutPage() {
     // Try to get content from database first (admin-editable)
-    const dbContent = await aboutContentDb.get()
+    let dbContent = null
+    try {
+        dbContent = await aboutContentDb.get()
+    } catch (error) {
+        console.error('Database connection failed during build in about page:', error)
+    }
 
     // Fallback to MDX if no database content
     const mdxData = getAboutContent()
@@ -40,7 +45,7 @@ export default async function AboutPage() {
                     <article className="prose prose-lg dark:prose-invert max-w-none prose-headings:text-white prose-p:text-white/70 prose-a:text-sky-400 prose-strong:text-white">
                         {hasDbContent ? (
                             // Render HTML content from database
-                            <div dangerouslySetInnerHTML={{ __html: dbContent.content }} />
+                            <div dangerouslySetInnerHTML={{ __html: dbContent!.content }} />
                         ) : (
                             // Render MDX content as fallback
                             <MDXContent content={mdxData!.content} />
