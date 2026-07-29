@@ -72,7 +72,7 @@ export async function POST() {
     let adminResult = 'Admin user already exists'
     if (!existingUser) {
       const passwordHash = await hashPassword(password)
-      const userId = adminUsersDb.create(username, passwordHash)
+      const userId = await adminUsersDb.create(username, passwordHash)
       adminResult = `Admin user created with ID: ${userId}`
     }
 
