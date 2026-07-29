@@ -75,7 +75,7 @@ export function ContactForm() {
                             </svg>
                         </div>
                         <h4 className="text-lg font-semibold mb-2">Message Sent!</h4>
-                        <p className="text-green-400/80">Thank you for reaching out. I'll get back to you as soon as possible.</p>
+                        <p className="text-green-400/80">Thank you for reaching out. I&apos;ll get back to you as soon as possible.</p>
                         <button
                             onClick={() => setSubmitStatus('idle')}
                             className="mt-6 px-6 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 rounded-lg transition-colors"
