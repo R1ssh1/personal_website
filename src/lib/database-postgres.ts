@@ -123,7 +123,16 @@ export const adminUsersDbPostgres = {
         'SELECT * FROM admin_users WHERE username = $1',
         [username]
       )
-      return result.rows[0] || null
+      const row = result.rows[0]
+      if (!row) return null
+      
+      return {
+        id: row.id,
+        username: row.username,
+        passwordHash: row.password_hash,
+        isAdmin: row.is_admin,
+        createdAt: row.created_at
+      }
     } finally {
       client.release()
     }
@@ -136,7 +145,16 @@ export const adminUsersDbPostgres = {
         'SELECT * FROM admin_users WHERE id = $1',
         [id]
       )
-      return result.rows[0] || null
+      const row = result.rows[0]
+      if (!row) return null
+      
+      return {
+        id: row.id,
+        username: row.username,
+        passwordHash: row.password_hash,
+        isAdmin: row.is_admin,
+        createdAt: row.created_at
+      }
     } finally {
       client.release()
     }
@@ -180,7 +198,15 @@ export const adminSessionsDbPostgres = {
         'SELECT * FROM admin_sessions WHERE id = $1',
         [id]
       )
-      return result.rows[0] || null
+      const row = result.rows[0]
+      if (!row) return null
+      
+      return {
+        id: row.id,
+        userId: row.user_id,
+        expiresAt: row.expires_at,
+        createdAt: row.created_at
+      }
     } finally {
       client.release()
     }
@@ -219,7 +245,19 @@ export const certificationsDbPostgres = {
       const result = await client.query(
         'SELECT * FROM certifications ORDER BY issue_date DESC'
       )
-      return result.rows
+      return result.rows.map(row => ({
+        id: row.id,
+        title: row.title,
+        issuer: row.issuer,
+        issueDate: row.issue_date,
+        expirationDate: row.expiration_date,
+        verificationLink: row.verification_link,
+        description: row.description,
+        tags: row.tags,
+        imageUrl: row.image_url,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      }))
     } finally {
       client.release()
     }
@@ -232,7 +270,22 @@ export const certificationsDbPostgres = {
         'SELECT * FROM certifications WHERE id = $1',
         [id]
       )
-      return result.rows[0] || null
+      const row = result.rows[0]
+      if (!row) return null
+      
+      return {
+        id: row.id,
+        title: row.title,
+        issuer: row.issuer,
+        issueDate: row.issue_date,
+        expirationDate: row.expiration_date,
+        verificationLink: row.verification_link,
+        description: row.description,
+        tags: row.tags,
+        imageUrl: row.image_url,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      }
     } finally {
       client.release()
     }
@@ -341,7 +394,17 @@ export const projectsDbPostgres = {
       const result = await client.query(
         'SELECT * FROM projects ORDER BY created_at DESC'
       )
-      return result.rows
+      return result.rows.map(row => ({
+        id: row.id,
+        title: row.title,
+        description: row.description,
+        techStack: row.tech_stack,
+        githubLink: row.github_link,
+        liveDemoLink: row.live_demo_link,
+        images: row.images,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      }))
     } finally {
       client.release()
     }
@@ -354,7 +417,20 @@ export const projectsDbPostgres = {
         'SELECT * FROM projects WHERE id = $1',
         [id]
       )
-      return result.rows[0] || null
+      const row = result.rows[0]
+      if (!row) return null
+      
+      return {
+        id: row.id,
+        title: row.title,
+        description: row.description,
+        techStack: row.tech_stack,
+        githubLink: row.github_link,
+        liveDemoLink: row.live_demo_link,
+        images: row.images,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      }
     } finally {
       client.release()
     }
@@ -453,7 +529,18 @@ export const blogPostsDbPostgres = {
       const result = await client.query(
         'SELECT * FROM blog_posts ORDER BY created_at DESC'
       )
-      return result.rows
+      return result.rows.map(row => ({
+        id: row.id,
+        title: row.title,
+        excerpt: row.excerpt,
+        content: row.content,
+        tags: row.tags,
+        publishDate: row.publish_date,
+        featuredImage: row.featured_image,
+        published: row.published,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      }))
     } finally {
       client.release()
     }
@@ -466,7 +553,21 @@ export const blogPostsDbPostgres = {
         'SELECT * FROM blog_posts WHERE id = $1',
         [id]
       )
-      return result.rows[0] || null
+      const row = result.rows[0]
+      if (!row) return null
+      
+      return {
+        id: row.id,
+        title: row.title,
+        excerpt: row.excerpt,
+        content: row.content,
+        tags: row.tags,
+        publishDate: row.publish_date,
+        featuredImage: row.featured_image,
+        published: row.published,
+        createdAt: row.created_at,
+        updatedAt: row.updated_at
+      }
     } finally {
       client.release()
     }
