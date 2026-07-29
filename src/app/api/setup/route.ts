@@ -61,7 +61,13 @@ export async function POST() {
     const username = process.env.ADMIN_USERNAME || 'admin'
     const password = process.env.ADMIN_PASSWORD || 'portfolio123'
 
-    const existingUser = adminUsersDb.getByUsername(username)
+    // Initialize database tables if using PostgreSQL
+    if (process.env.DATABASE_URL && process.env.NODE_ENV === 'production') {
+      const { initializeDatabasePostgres } = await import('@/lib/database-postgres')
+      await initializeDatabasePostgres()
+    }
+
+    const existingUser = await adminUsersDb.getByUsername(username)
 
     let adminResult = 'Admin user already exists'
     if (!existingUser) {

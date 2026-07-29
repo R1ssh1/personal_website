@@ -160,10 +160,9 @@ export const aboutContentDb = usePostgres ? aboutContentDbPostgres : sqliteAbout
 export const contactSubmissionsDb = usePostgres ? contactSubmissionsDbPostgres : sqliteContactSubmissionsDbAsync
 export const highScoresDb = sqliteHighScoresDbAsync // For now, only SQLite support
 
-// Initialize the database on import
+// Initialize the database on import for SQLite only (development)
 if (usePostgres) {
-  console.log('Using PostgreSQL database in production')
-  initializeDatabasePostgres().catch(console.error)
+  console.log('Using PostgreSQL database in production. Ensure tables are initialized via setup script.')
 } else {
   console.log('Using SQLite database in development')
   initializeSQLite()
