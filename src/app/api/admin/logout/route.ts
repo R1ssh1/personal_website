@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { adminSessionsDb } from '@/lib/database'
+import { adminSessionsDb } from '@/lib/database-unified'
 import { cookies } from 'next/headers'
 
 export async function POST(request: NextRequest) {
