@@ -9,7 +9,12 @@ export const metadata = {
 
 export default async function AboutPage() {
     // Try to get content from database first (admin-editable)
-    const dbContent = await aboutContentDb.get()
+    let dbContent = null
+    try {
+        dbContent = await aboutContentDb.get()
+    } catch (error) {
+        console.error('Database connection failed during build in about page:', error)
+    }
 
     // Fallback to MDX if no database content
     const mdxData = getAboutContent()
