@@ -2,6 +2,9 @@ import { getAboutContent } from '@/lib/mdx'
 import { aboutContentDb } from '@/lib/database-unified'
 import { MDXContent } from '@/components/MDXContent'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata = {
     title: 'About - Rishi Jha',
     description: 'Learn more about my background, skills, and interests in computer science and software development.',

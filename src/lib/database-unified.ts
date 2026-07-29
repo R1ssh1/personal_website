@@ -27,7 +27,7 @@ import {
 } from './database-postgres'
 
 // Determine which database to use based on environment
-const usePostgres = process.env.DATABASE_URL && process.env.NODE_ENV === 'production'
+const usePostgres = !!(process.env.DATABASE_URL)
 
 // Async wrappers for SQLite to maintain consistency
 const sqliteAdminUsersDbAsync = {
@@ -162,7 +162,7 @@ export const highScoresDb = sqliteHighScoresDbAsync // For now, only SQLite supp
 
 // Initialize the database on import for SQLite only (development)
 if (usePostgres) {
-  console.log('Using PostgreSQL database in production. Ensure tables are initialized via setup script.')
+  console.log('Using PostgreSQL database. Ensure tables are initialized via setup script.')
 } else {
   console.log('Using SQLite database in development')
   initializeSQLite()

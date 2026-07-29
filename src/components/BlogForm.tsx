@@ -110,12 +110,12 @@ export default function BlogForm({
       handleInputChange('featuredImage', file.url);
       setUploadError('');
     }
-  }, []);
+  }, [handleInputChange]);
 
   const handleRemoveFeaturedImage = useCallback(() => {
     setFeaturedImage([]);
     handleInputChange('featuredImage', '');
-  }, []);
+  }, [handleInputChange]);
 
   const handleUploadError = useCallback((error: string) => {
     setUploadError(error);

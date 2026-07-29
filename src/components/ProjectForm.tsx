@@ -118,14 +118,14 @@ export default function ProjectForm({
     const imageUrls = newImages.map(img => img.url);
     handleInputChange('images', imageUrls);
     setUploadError('');
-  }, [projectImages]);
+  }, [projectImages, handleInputChange]);
 
   const handleRemoveImage = useCallback((index: number) => {
     const newImages = projectImages.filter((_, i) => i !== index);
     setProjectImages(newImages);
     const imageUrls = newImages.map(img => img.url);
     handleInputChange('images', imageUrls);
-  }, [projectImages]);
+  }, [projectImages, handleInputChange]);
 
   const handleUploadError = useCallback((error: string) => {
     setUploadError(error);
